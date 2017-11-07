@@ -99,13 +99,10 @@ async function getItemDescription(listingID) {
   listingID;
   let response = await database.ref(`/listing/${listingID}`).once("value");
 
-  console.log(response.val());
-
   let itemToReturn = {
     price: response.val().price,
     blurb: response.val().blurb
   };
-  console.log(2 + 2);
   itemToReturn;
   return itemToReturn;
 }
@@ -182,7 +179,6 @@ allItemsSold returns the IDs of all the items sold by a seller
 async function allItemsSold(sellerID) {
   sellerID;
   let response = await database.ref(`/itemsSold/${sellerID}`).once("value");
-  console.log(response.val());
   return response.val();
 }
 
@@ -194,7 +190,6 @@ allItemsBought returns the IDs of all the items bought by a buyer
 async function allItemsBought(buyerID) {
   buyerID;
   let response = await database.ref(`/itemsBought/${buyerID}`).once("value");
-  console.log(response.val());
   return response.val();
 }
 
@@ -227,20 +222,18 @@ Once an item is sold, it will not be returned by searchForListings
 */
 async function searchForListings(searchTerm) {
   let response = await database.ref("/listing").once("value");
-  console.log(response);
-  response.val();
+  let itemsInListing = response.val();
+  let matchedID = [];
 
-  let availableList = [];
-
-  for (let item in response.val()) {
-    if (response.val()[item].available === true) {
-      if (response.val()[item].blurb.includes(searchTerm)) {
-        availableList.push(item);
+  for (let item in itemsInListing) {
+    if (itemsInListing[item].available) {
+      console.log(itemsInListing[item].blurb.includes(searchTerm));
+      if (itemsInListing[item].blurb.includes(searchTerm)) {
+        matchedID.push(item);
       }
     }
   }
-  availableList;
-  return availableList;
+  return matchedID;
 }
 
 // The tests
@@ -262,21 +255,23 @@ async function test() {
 
   let allSold = await allItemsSold(sellerID);
   let soldDescriptions = await Promise.all(allSold.map(getItemDescription));
-  console.log("hello");
+  console.log("1step");
   let allBought = await allItemsBought(buyerID);
-  console.log("hello");
+  console.log("2step");
   let allBoughtDescriptions = await Promise.all(
     allBought.map(getItemDescription)
   );
-  console.log("hello");
+  console.log("before Search");
   let listings = await allListings();
   let boatListings = await searchForListings("boat");
+  console.log("boatListings", boatListings);
   let shoeListings = await searchForListings("shoes");
-  console.log("hello");
+  console.log("shoelistng", shoeListings);
+  console.log("after search");
   let boatDescription = await getItemDescription(listings[0]);
   let boatBlurb = boatDescription.blurb;
   let boatPrice = boatDescription.price;
-  console.log("hello");
+  console.log("last step before assert");
 
   assert(allSold.length == 2); // The seller has sold 2 items
   assert(allBought.length == 2); // The buyer has bought 2 items
