@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Jumbotron, Button, Grid, Row, Col } from "react-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "../css/Landing.css";
 
 class Landing extends Component {
@@ -14,7 +15,9 @@ class Landing extends Component {
                 Buy and sell goods from around the globe in just a few clicks.
               </p>
               <p>
-                <Button bsStyle="primary">Enter</Button>
+                <LinkContainer to="/market">
+                  <Button bsStyle="primary">Enter</Button>
+                </LinkContainer>
               </p>
             </Jumbotron>
           </Col>

@@ -1,19 +1,21 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import Landing from "./Landing";
 import Navigation from "./Navigation";
+import Market from "./Market";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/App.css";
 
 class App extends Component {
   render() {
     return (
-      <Router>
+      <BrowserRouter>
         <div>
-          <Landing />
           <Navigation />
+          <Route exact path="/" render={() => <Landing />} />
+          <Route path="/market" render={() => <Market />} />
         </div>
-      </Router>
+      </BrowserRouter>
     );
   }
 }
