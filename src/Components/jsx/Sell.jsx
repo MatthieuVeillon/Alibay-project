@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from 'react';
 import {
   Jumbotron,
   Button,
@@ -8,22 +8,19 @@ import {
   Form,
   FormGroup,
   FormControl,
-  ControlLabel
-} from "react-bootstrap";
-import "../css/Sell.css";
-import { LinkContainer } from "react-router-bootstrap";
-
-// var BackendTools = require("../../backend-mockup.js");
+  ControlLabel,
+} from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import '../css/Sell.css';
+import { createListing } from '../../backend-mockup.js';
 
 class Sell extends Component {
   clickAddProduct = () => {
-    this.props.buttonClick({
-      userName: this.inputUserName.value,
-      productName: this.inputProductName.value,
-      productPrice: this.inputProductPrice.value,
-      productDescription: this.inputProductDescription.value,
-      productImageUrl: this.inputProductImage.value
-    });
+    var userId = this.inputUserId.value;
+    var productPrice = this.inputProductPrice.value;
+    var productDescription = this.inputProductDescription.value;
+    var ProductName = this.inputProductName.value;
+    this.props.buttonClick(createListing(userId, ProductName, productPrice, productDescription));
   };
 
   render() {
@@ -33,9 +30,9 @@ class Sell extends Component {
           <Col xs={12}>
             <Form>
               <FormGroup controlId="formBasicText">
-                <ControlLabel>User name</ControlLabel>
+                <ControlLabel>UserId</ControlLabel>
                 <FormControl
-                  inputRef={r => (this.inputUserName = r)}
+                  inputRef={r => (this.inputUserId = r)}
                   type="text"
                   placeholder="Enter text"
                 />
@@ -58,10 +55,7 @@ class Sell extends Component {
                   placeholder="Enter text"
                 />
                 <ControlLabel>Image</ControlLabel>
-                <FormControl
-                  inputRef={r => (this.inputProductImage = r)}
-                  type="file"
-                />
+                <FormControl inputRef={r => (this.inputProductImage = r)} type="file" />
               </FormGroup>
             </Form>
 

@@ -1,17 +1,13 @@
-import React, { Component } from "react";
-import {
-  Jumbotron,
-  Button,
-  Grid,
-  Row,
-  Col,
-  Form,
-  FormGroup,
-  FormControl
-} from "react-bootstrap";
-import "../css/Market.css";
+import React, { Component } from 'react';
+import { Jumbotron, Button, Grid, Row, Col, Form, FormGroup, FormControl } from 'react-bootstrap';
+import '../css/Market.css';
+import ProductsTable from './ProductsTable';
 
 class Market extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
   render() {
     return (
       <Grid className="searchProducts">
@@ -28,6 +24,7 @@ class Market extends Component {
                 <FormControl type="text" placeholder="Search" />
               </FormGroup>
             </Form>
+            <ProductsTable products={this.props.products} />
           </Col>
         </Row>
       </Grid>

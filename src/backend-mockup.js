@@ -1,12 +1,12 @@
-const assert = require("assert");
+const assert = require('assert');
 
 function genUID() {
   return Math.floor(Math.random() * 100000000);
 }
 
-let itemsBought = {}; // global variable that keeps track of all the items a user has bought
-let itemsSold = {}; // global variable that keeps track of all the items a seller has sold
-let listing = {}; // QUESTION ARRAY or OBJECT - we choose object
+const itemsBought = {}; // global variable that keeps track of all the items a user has bought
+const itemsSold = {}; // global variable that keeps track of all the items a seller has sold
+const listing = {}; // QUESTION ARRAY or OBJECT - we choose object
 
 // You'll need to add many more global variables
 
@@ -28,49 +28,52 @@ function initializeUserIfNeeded(uid) {
   if (!(uid in itemsSold)) itemsSold[uid] = [];
 }
 
-/* 
+/*
 createListing adds a new listing to our global state.
-    parameters: 
+    parameters:
       [sellerID] The ID of the seller
       [price] The price of the item
       [blurb] A blurb describing the item
     returns: the ID of the new listing
 */
-function createListing(sellerID, price, blurb) {
-  let listingID = genUID(); // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
+function createListing(sellerID, productName, price, blurb) {
+  const listingID = genUID(); // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
 
-  let listingItem = {
-    sellerID: sellerID,
-    price: price,
-    blurb: blurb,
-    available: true
+  const listingItem = {
+    sellerID,
+    productName,
+    price,
+    blurb,
+    available: true,
+    listingID,
   };
 
   listing[listingID] = listingItem;
 
-  return listingID;
+  return listingItem;
 }
 
-/* 
+/*
 getItemDescription returns the description of a listing
     parameter: [listingID] The ID of the listing
     returns: an object that contains the price and the blurb
 */
 function getItemDescription(listingID) {
-  let itemToReturn = {
+  const itemToReturn = {
+    productName: listing[listingID].productName,
     price: listing[listingID].price,
-    blurb: listing[listingID].blurb
+    blurb: listing[listingID].blurb,
   };
   return itemToReturn;
 }
 
-/* 
+/*
 buy changes the global state.
-Another buyer will not be able to purchase that listing - DONE with the one below - do we need to do anything more specific ? 
+Another buyer will not be able to purchase that listing - DONE with the one below - do we need to do anything more specific ?
 The listing will no longer appear in search results - DONE
-The buyer will see the listing in his history of purchases - DONE 
-The seller will see the listing in his history of items sold - DONE 
-    parameters: 
+The buyer will see the listing in his history of purchases - DONE
+The seller will see the listing in his history of items sold - DONE
+    parameters:
      [buyerID] The ID of buyer
      [sellerID] The ID of seller
      [listingID] The ID of listing
@@ -78,18 +81,18 @@ The seller will see the listing in his history of items sold - DONE
 */
 function buy(buyerID, sellerID, listingID) {
   if (listing[listingID].available) {
-    itemsBought[buyerID] = itemsBought[buyerID].concat([listingID]); //QUESTION  : should we include the listing ID ? at the top we're considering ItemsBought as an array The buyer will see the listing in his history of purchases
-    itemsSold[sellerID] = itemsSold[sellerID].concat([listingID]); //The seller will see the listing in his history of items sold
+    itemsBought[buyerID] = itemsBought[buyerID].concat([listingID]); // QUESTION  : should we include the listing ID ? at the top we're considering ItemsBought as an array The buyer will see the listing in his history of purchases
+    itemsSold[sellerID] = itemsSold[sellerID].concat([listingID]); // The seller will see the listing in his history of items sold
     listing[listingID].available = false;
   } else {
-    return "item already sold";
+    return 'item already sold';
   }
 }
 
-/* 
+/*
 allItemsSold returns the IDs of all the items sold by a seller
     parameter: [sellerID] The ID of the seller
-    returns: an array of listing IDs - QUESTION not array with ID AND full object information ? 
+    returns: an array of listing IDs - QUESTION not array with ID AND full object information ?
 */
 function allItemsSold(sellerID) {
   return itemsSold[sellerID];
@@ -110,8 +113,8 @@ Once an item is sold, it will not be returned by allListings
     returns: an array of listing IDs
 */
 function allListings() {
-  let availableList = [];
-  for (let item in listing) {
+  const availableList = [];
+  for (const item in listing) {
     if (listing[item].available === true) {
       availableList.push(item);
     }
@@ -127,9 +130,9 @@ Once an item is sold, it will not be returned by searchForListings
     returns: an array of listing IDs
 */
 function searchForListings(searchTerm) {
-  let matchedSearchedItems = [];
+  const matchedSearchedItems = [];
 
-  for (let item in listing) {
+  for (const item in listing) {
     if (listing[item].available === true) {
       if (listing[item].blurb.includes(searchTerm)) {
         matchedSearchedItems.push(item);
@@ -139,43 +142,44 @@ function searchForListings(searchTerm) {
   return matchedSearchedItems;
 }
 
-// The tests
-let sellerID = genUID();
-let buyerID = genUID();
-initializeUserIfNeeded(sellerID);
-initializeUserIfNeeded(buyerID);
-let listing1ID = createListing(sellerID, 500000, "A very nice boat");
-let listing2ID = createListing(sellerID, 1000, "Faux fur gloves");
-let listing3ID = createListing(sellerID, 100, "Running shoes");
-let product2Description = getItemDescription(listing2ID);
+// // The tests
+// let sellerID = genUID();
+// let buyerID = genUID();
+// initializeUserIfNeeded(sellerID);
+// initializeUserIfNeeded(buyerID);
+// let listing1ID = createListing(sellerID, 500000, "A very nice boat");
+// let listing2ID = createListing(sellerID, 1000, "Faux fur gloves");
+// let listing3ID = createListing(sellerID, 100, "Running shoes");
+// let product2Description = getItemDescription(listing2ID);
 
-buy(buyerID, sellerID, listing2ID);
-buy(buyerID, sellerID, listing3ID);
+// buy(buyerID, sellerID, listing2ID);
+// buy(buyerID, sellerID, listing3ID);
 
-let allSold = allItemsSold(sellerID);
-let soldDescriptions = allSold.map(getItemDescription);
+// let allSold = allItemsSold(sellerID);
+// let soldDescriptions = allSold.map(getItemDescription);
 
-let allBought = allItemsBought(buyerID);
-let allBoughtDescriptions = allBought.map(getItemDescription);
+// let allBought = allItemsBought(buyerID);
+// let allBoughtDescriptions = allBought.map(getItemDescription);
 
-let listings = allListings();
-let boatListings = searchForListings("boat");
-let shoeListings = searchForListings("shoes");
+// let listings = allListings();
+// let boatListings = searchForListings("boat");
+// let shoeListings = searchForListings("shoes");
 
-let boatDescription = getItemDescription(listings[0]);
-let boatBlurb = boatDescription.blurb;
-let boatPrice = boatDescription.price;
+// let boatDescription = getItemDescription(listings[0]);
+// let boatBlurb = boatDescription.blurb;
+// let boatPrice = boatDescription.price;
 
-assert(allSold.length == 2); // The seller has sold 2 items
-assert(allBought.length == 2); // The buyer has bought 2 items
-assert(listings.length == 1); // Only the boat is still on sale
-assert(boatListings.length == 1); // The boat hasn't been sold yet
-assert(shoeListings.length == 0); // The shoes have been sold
-assert(boatBlurb == "A very nice boat");
-assert(boatPrice == 500000);
-console.log("complete");
+// assert(allSold.length == 2); // The seller has sold 2 items
+// assert(allBought.length == 2); // The buyer has bought 2 items
+// assert(listings.length == 1); // Only the boat is still on sale
+// assert(boatListings.length == 1); // The boat hasn't been sold yet
+// assert(shoeListings.length == 0); // The shoes have been sold
+// assert(boatBlurb == "A very nice boat");
+// assert(boatPrice == 500000);
+// console.log("complete");
 
-module.export = {
+module.exports = {
+  genUID,
   initializeUserIfNeeded,
   createListing,
   getItemDescription,
@@ -183,5 +187,5 @@ module.export = {
   allItemsSold,
   allItemsBought,
   allListings,
-  searchForListings
+  searchForListings,
 };

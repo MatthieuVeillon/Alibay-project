@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import { Jumbotron, Button, Grid, Row, Col } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
-import "../css/Landing.css";
+import React, { Component } from 'react';
+import { Jumbotron, Button, Grid, Row, Col } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
+import '../css/Landing.css';
 
 class Landing extends Component {
   render() {
@@ -12,9 +12,7 @@ class Landing extends Component {
             <Col xs={12}>
               <Jumbotron id="landingJumbotron">
                 <h1>Marketplace of the future</h1>
-                <p>
-                  Buy and sell goods from around the globe in just a few clicks.
-                </p>
+                <p>Buy and sell goods from around the globe in just a few clicks.</p>
                 <p>
                   <LinkContainer to="/market">
                     <Button bsStyle="primary">Enter</Button>
