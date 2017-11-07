@@ -1,3 +1,11 @@
 #landingJumbotron {
   margin-top: 200px;
+  background: rgba(245, 247, 246, 0.9);
+}
+#homeViewPage {
+  background-image: url("../../Images/project_background.jpg");
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
 }

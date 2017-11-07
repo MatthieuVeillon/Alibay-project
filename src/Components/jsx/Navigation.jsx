@@ -23,10 +23,13 @@ class Navigation extends Component {
               <NavItem eventKey={1}>Buy</NavItem>
             </LinkContainer>
             <LinkContainer to="/market">
-              <NavItem eventKey={1}>Sell</NavItem>
+              <NavItem eventKey={2}>Sell</NavItem>
+            </LinkContainer>
+            <LinkContainer to="/account">
+              <NavItem eventKey={3}>Account</NavItem>
             </LinkContainer>
             <LinkContainer to="/market">
-              <NavItem eventKey={1}>Sign In</NavItem>
+              <NavItem eventKey={4}>Sign In</NavItem>
             </LinkContainer>
           </Nav>
         </Navbar.Collapse>
