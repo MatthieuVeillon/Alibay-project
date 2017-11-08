@@ -4,11 +4,14 @@
   "private": true,
   "quokka": {
     "babel": {
-      "presets": ["react-app"]
+      "presets": [
+        "react-app"
+      ]
     }
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "firebase": "^4.6.1",
     "firebase-admin": "^5.4.3",
     "react": "^16.0.0",
     "react-bootstrap": "^0.31.5",

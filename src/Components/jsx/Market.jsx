@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import {
   Jumbotron,
@@ -8,7 +8,7 @@ import {
   Col,
   Form,
   FormGroup,
-  FormControl,
+  FormControl
 } from "react-bootstrap";
 import "../css/Market.css";
 import ProductsTable from "./ProductsTable";
@@ -18,14 +18,14 @@ class Market extends Component {
   constructor() {
     super();
     this.state = {
-      purchaseButtonClicked: false,
+      purchaseButtonClicked: false
     };
   }
   purchaseClick = () => {
-    this.setState({purchaseButtonClicked: true});
+    this.setState({ purchaseButtonClicked: true });
   };
   componentDidMmount = () => {
-    this.setState({purchaseButtonClicked: false});
+    this.setState({ purchaseButtonClicked: false });
   };
   render() {
     return (
