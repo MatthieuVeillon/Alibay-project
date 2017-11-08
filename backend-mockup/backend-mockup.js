@@ -116,6 +116,7 @@ function allListings() {
       availableList.push(item);
     }
   }
+
   return availableList;
   // return Object.keys(listing).filter(item => listing[item].available === true);
 }
