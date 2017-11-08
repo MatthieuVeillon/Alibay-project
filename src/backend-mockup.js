@@ -65,7 +65,9 @@ getItemDescription returns the description of a listing
 function getItemDescription(listingID) {
   const itemToReturn = {
     productName: listing[listingID].productName,
+    sellerId: listing[listingID].sellerID,
     price: listing[listingID].price,
+    listingID: listing[listingID].listingID,
     blurb: listing[listingID].blurb,
   };
 
