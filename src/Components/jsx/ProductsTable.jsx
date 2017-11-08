@@ -9,9 +9,7 @@ import {
   FormGroup,
   FormControl,
 } from "react-bootstrap";
-
 import ReactModal from "react-modal";
-
 import {LinkContainer} from "react-router-bootstrap";
 import "../css/ProductsTable.css";
 import {getItemDescription, allListings, buy} from "../../backend-mockup";
@@ -43,7 +41,7 @@ class ProductTables extends Component {
   };
   initializeBuy = (x, y) => {
     buy(this.props.currentUserId, x, y);
-    // this.handleOpenModal();
+    this.handleOpenModal();
     this.setState({descriptions: this.getAlldescription()});
   };
   displayProducts = () => {
@@ -61,15 +59,6 @@ class ProductTables extends Component {
           >
             Buy
           </Button>
-          <div>
-            <ReactModal
-              isOpen={this.state.showModal}
-              contentLabel="Minimal Modal Example"
-            >
-              <h3>congrats for your buy</h3>
-              <Button onClick={this.handleCloseModal}>Close</Button>
-            </ReactModal>
-          </div>
         </Jumbotron>
       </div>
     ));
@@ -81,6 +70,14 @@ class ProductTables extends Component {
     return (
       <Grid>
         <Row>{this.displayProducts()}</Row>
+        <div>
+          <ReactModal isOpen={this.state.showModal}>
+            <h3>congrats for your buy</h3>
+            <Button bsStyle="primary" onClick={this.handleCloseModal}>
+              Close
+            </Button>
+          </ReactModal>
+        </div>
       </Grid>
     );
   }

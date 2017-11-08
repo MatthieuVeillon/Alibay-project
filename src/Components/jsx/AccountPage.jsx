@@ -13,16 +13,27 @@ import "../css/Account.css";
 import {allItemsSold, getItemDescription} from "../../backend-mockup";
 
 class AccountPage extends Component {
-  // getAllDescriptionSold = sellerId => {
-  //   // an array of sold listing IDs
-  //   const ids = allItemsSold(sellerId);
-  //   // an array of sold listing full description
-  //   const descriptionsArray = ids.map(id => getItemDescription(id));
+  getAllDescriptionSold = sellerId => {
+    // an array of sold listing IDs
+    const ids = allItemsSold(sellerId);
+    // an array of sold listing full description
+    if (!ids.length > 0) {
+      const descriptionsArray = ids.map(id => getItemDescription(id));
 
-  //   return descriptionsArray;
-  // };
+      return descriptionsArray;
+    }
+    const noProductSolds = (
+      <div>
+        <Jumbotron>
+          <h3>No product sold</h3>
+        </Jumbotron>
+      </div>
+    );
+
+    return noProductSolds;
+  };
   displaySold = sellerId => {
-    /* const descriptions = this.getAllDescriptionSold(sellerId);
+    const descriptions = this.getAllDescriptionSold(sellerId);
     // iterate through array of descrpition object to populate an array of html elements
     const htmlDescription = descriptions.map((desc, i) => (
       <div key={i}>
@@ -34,7 +45,7 @@ class AccountPage extends Component {
       </div>
     ));
 
-    return htmlDescription; */
+    return htmlDescription;
   };
   render() {
     return (

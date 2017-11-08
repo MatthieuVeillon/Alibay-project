@@ -66,7 +66,10 @@ class App extends Component {
           <Route
             path="/accountPage"
             render={() => (
-              <AccountPage currentUserId={this.state.currentUserId} />
+              <AccountPage
+                currentUserId={this.state.currentUserId}
+                currentUserId={this.state.currentUserId}
+              />
             )}
           />
 
