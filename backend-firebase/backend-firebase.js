@@ -283,3 +283,15 @@ async function test() {
   console.log("complete");
 }
 test();
+
+module.export = {
+  genUID,
+  initializeUserIfNeeded,
+  createListing,
+  getItemDescription,
+  buy,
+  allItemsSold,
+  allItemsBought,
+  allListings,
+  searchForListings
+};
