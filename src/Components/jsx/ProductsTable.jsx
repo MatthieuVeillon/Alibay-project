@@ -21,12 +21,14 @@ class ProductTables extends Component {
     super();
     this.state = {
       showModal: false,
+      descriptions: this.getAlldescription(),
     };
   }
 
   getAlldescription = () => {
     // an array of available listing IDs
     const ids = allListings();
+    console.log("ids", ids);
     // an array of available listing full description
     const descriptionsArray = ids.map(id => getItemDescription(id));
 
@@ -40,14 +42,13 @@ class ProductTables extends Component {
     this.setState({showModal: true});
   };
   initializeBuy = (x, y) => {
-    // buy(this.props.currentUserId, x, y);
-    console.log(this.props.currentUserId);
+    buy(this.props.currentUserId, x, y);
+    // this.handleOpenModal();
+    this.setState({descriptions: this.getAlldescription()});
   };
   displayProducts = () => {
-    const descriptions = this.getAlldescription();
-
     // iterate through array of descrpition object to populate an array of html elements
-    const htmlDescription = descriptions.map((desc, i) => (
+    const htmlDescription = this.state.descriptions.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
           <h3>{desc.productName}</h3>
