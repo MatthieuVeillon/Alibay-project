@@ -9,12 +9,28 @@ import {
   FormGroup,
   FormControl,
 } from "react-bootstrap";
+import {ReactModal} from "react-modal";
 
 import {LinkContainer} from "react-router-bootstrap";
 import "../css/ProductsTable.css";
-import {getItemDescription, allListings} from "../../backend-mockup";
+import {getItemDescription, allListings, buy} from "../../backend-mockup";
 
 class ProductTables extends Component {
+  constructor() {
+    super();
+    this.state = {
+      showModal: false,
+    };
+  }
+
+  handleOpenModal() {
+    this.setState({showModal: true});
+  }
+
+  handleCloseModal() {
+    this.setState({showModal: false});
+  }
+
   getAlldescription = () => {
     // an array of available listing IDs
     const ids = allListings();
@@ -23,9 +39,6 @@ class ProductTables extends Component {
 
     return descriptionsArray;
   };
-  // initializeBuy = (buyerId, sellerID, listingID) => {
-
-  // };
 
   displayProducts = () => {
     const descriptions = this.getAlldescription();
@@ -35,14 +48,33 @@ class ProductTables extends Component {
       <div key={i}>
         <Jumbotron>
           <h3>{desc.productName}</h3>
-          <h4>Seller id: {desc.sellerId}</h4>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
-          <LinkContainer to="/buy">
-            <Button onClick={this.purchaseClick} bsStyle="primary">
+          <LinkContainer to="/market">
+            <Button
+              onClick={() =>
+                buy(this.props.currentUserId, desc.sellerID, desc.listingID)
+              }
+              bsStyle="primary"
+            >
               Buy
             </Button>
+            <ReactModal
+              isOpen={this.state.showModal}
+              contentLabel="Minimal Modal Example"
+              style={{
+                overlay: {
+                  backgroundColor: "rgba(255, 255, 255, 0.75)",
+                },
+                content: {
+                  margin: "100px",
+                },
+              }}
+            >
+              <h2>Congrats for your purchase!</h2>
+              <button onClick={this.handleCloseModal}>Close</button>
+            </ReactModal>
           </LinkContainer>
         </Jumbotron>
       </div>
@@ -59,5 +91,4 @@ class ProductTables extends Component {
     );
   }
 }
-
 export default ProductTables;

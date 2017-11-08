@@ -5,7 +5,6 @@ import Navigation from "./Navigation";
 import Market from "./Market";
 import AccountPage from "./AccountPage";
 import Sell from "./Sell";
-import Buy from "./Buy";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/App.css";
 import firebase from "firebase";
@@ -58,7 +57,9 @@ class App extends Component {
 
           <Route
             path="/accountPage"
-            render={() => <AccountPage userId={this.state.userId} />}
+            render={() => (
+              <AccountPage currentUserId={this.state.currentUserId} />
+            )}
           />
 
           <Route
@@ -66,16 +67,11 @@ class App extends Component {
             path="/sell"
             render={() => (
               <Sell
-                buttonClick={this.handleNewProduct}
+                addProductToState={this.handleNewProduct}
                 currentUserId={this.state.currentUserId}
               />
             )}
           />
-          {/* <Route
-            exact
-            path="/buy"
-            render={() => <Buy products={this.state.productsForSale} />}
-          /> */}
         </div>
       </BrowserRouter>
     );

@@ -20,7 +20,7 @@ class Sell extends Component {
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
     const ProductName = this.inputProductName.value;
-    this.props.buttonClick(
+    this.props.addProductToState(
       createListing(userId, ProductName, productPrice, productDescription),
     );
   };
@@ -32,14 +32,6 @@ class Sell extends Component {
           <Col xs={12}>
             <Form>
               <FormGroup controlId="formBasicText">
-                <ControlLabel>UserId</ControlLabel>
-                <FormControl
-                  inputRef={r => {
-                    this.inputUserId = r;
-                  }}
-                  type="text"
-                  placeholder="Enter text"
-                />
                 <ControlLabel>Product Name</ControlLabel>
                 <FormControl
                   inputRef={r => {

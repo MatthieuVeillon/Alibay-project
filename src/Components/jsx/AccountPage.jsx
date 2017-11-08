@@ -22,7 +22,6 @@ class AccountPage extends Component {
   //   return descriptionsArray;
   // };
   displaySold = sellerId => {
-    console.log(sellerId);
     /* const descriptions = this.getAllDescriptionSold(sellerId);
     // iterate through array of descrpition object to populate an array of html elements
     const htmlDescription = descriptions.map((desc, i) => (
@@ -42,12 +41,12 @@ class AccountPage extends Component {
       <Grid className="componentHeader">
         <Row>
           <Col xs={12}>
-            <h1>Hello id {this.props.userId}</h1>
+            <h1>Hello id {this.props.currentUserId}</h1>
             <h2>Products sold:</h2>
           </Col>
         </Row>
         <Row>
-          <Col xs={6}>{this.displaySold(this.props.userId)}</Col>
+          <Col xs={6}>{this.displaySold(this.props.currentUserId)}</Col>
         </Row>
       </Grid>
     );
