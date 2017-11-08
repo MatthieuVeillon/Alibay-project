@@ -13,6 +13,7 @@ import {
 import "../css/Market.css";
 import ProductsTable from "./ProductsTable";
 import Buy from "./Buy";
+
 class Market extends Component {
   constructor() {
     super();
@@ -46,17 +47,6 @@ class Market extends Component {
           </Col>
         </Row>
       </Grid>
-
-
-       <div>
-        {this.state.purchaseButtonClicked ? (
-          <Buy />
-        ) : (
-          <Grid>
-            <Row>{this.displayProducts()}</Row>
-          </Grid>
-        )}
-      </div>
     );
   }
 }

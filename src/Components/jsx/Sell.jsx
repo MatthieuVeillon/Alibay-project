@@ -74,7 +74,7 @@ class Sell extends Component {
               </FormGroup>
             </Form>
 
-            <LinkContainer to="/accountLogin">
+            <LinkContainer to="/accountPage">
               <Button onClick={this.clickAddProduct} bsStyle="primary">
                 Upload to market
               </Button>

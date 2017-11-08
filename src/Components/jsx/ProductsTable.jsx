@@ -38,11 +38,7 @@ class ProductTables extends Component {
           <h4>Seller id: {desc.sellerId}</h4>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
-<<<<<<< Updated upstream
           <h4>Item id: {desc.listingID}</h4>
-
-=======
->>>>>>> Stashed changes
           <LinkContainer to="/buy">
             <Button onClick={this.purchaseClick} bsStyle="primary">
               Buy

@@ -3,7 +3,6 @@ import {BrowserRouter, Route} from "react-router-dom";
 import Landing from "./Landing";
 import Navigation from "./Navigation";
 import Market from "./Market";
-import AccountLogin from "./AccountLogin";
 import AccountPage from "./AccountPage";
 import Sell from "./Sell";
 import Buy from "./Buy";
@@ -39,10 +38,7 @@ class App extends Component {
             path="/market"
             render={() => <Market products={this.state.productsForSale} />}
           />
-          <Route
-            path="/accountLogin"
-            render={() => <AccountLogin buttonClick={this.handleLogin} />}
-          />
+
           <Route
             path="/accountPage"
             render={() => <AccountPage userId={this.state.userId} />}
