@@ -1,4 +1,4 @@
-const assert = require('assert');
+const assert = require("assert");
 
 function genUID() {
   return Math.floor(Math.random() * 100000000);
@@ -22,10 +22,14 @@ function initializeUserIfNeeded(uid) {
   //   QUESTION : global state is different from react right ? right now the logic
   //   I understand is if user is not in our state => add a property to itemSold which doesn't make sense to me
 
-  if (!(uid in itemsBought)) itemsBought[uid] = [];
+  if (!(uid in itemsBought)) {
+    itemsBought[uid] = [];
+  }
   // There are many more things to do
 
-  if (!(uid in itemsSold)) itemsSold[uid] = [];
+  if (!(uid in itemsSold)) {
+    itemsSold[uid] = [];
+  }
 }
 
 /*
@@ -64,6 +68,7 @@ function getItemDescription(listingID) {
     price: listing[listingID].price,
     blurb: listing[listingID].blurb,
   };
+
   return itemToReturn;
 }
 
@@ -85,7 +90,7 @@ function buy(buyerID, sellerID, listingID) {
     itemsSold[sellerID] = itemsSold[sellerID].concat([listingID]); // The seller will see the listing in his history of items sold
     listing[listingID].available = false;
   } else {
-    return 'item already sold';
+    return "item already sold";
   }
 }
 
@@ -119,6 +124,7 @@ function allListings() {
       availableList.push(item);
     }
   }
+
   return availableList;
   // return Object.keys(listing).filter(item => listing[item].available === true);
 }
@@ -139,6 +145,7 @@ function searchForListings(searchTerm) {
       }
     }
   }
+
   return matchedSearchedItems;
 }
 

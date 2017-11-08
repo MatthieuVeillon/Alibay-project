@@ -1,7 +1,16 @@
-import React, { Component } from 'react';
-import { Jumbotron, Button, Grid, Row, Col, Form, FormGroup, FormControl } from 'react-bootstrap';
-import '../css/Market.css';
-import ProductsTable from './ProductsTable';
+import React, {Component} from "react";
+import {
+  Jumbotron,
+  Button,
+  Grid,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  FormControl,
+} from "react-bootstrap";
+import "../css/Market.css";
+import ProductsTable from "./ProductsTable";
 
 class Market extends Component {
   constructor(props) {

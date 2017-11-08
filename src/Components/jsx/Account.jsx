@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   Jumbotron,
   Button,
@@ -7,7 +7,7 @@ import {
   Col,
   Form,
   FormGroup,
-  FormControl
+  FormControl,
 } from "react-bootstrap";
 import "../css/Account.css";
 // var BackendTools = require("../../backend-mockup.js");

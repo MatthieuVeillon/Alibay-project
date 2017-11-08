@@ -1,11 +1,21 @@
-import React, { Component } from 'react';
-import { Jumbotron, Button, Grid, Row, Col, Form, FormGroup, FormControl } from 'react-bootstrap';
-import '../css/ProductsTable.css';
-import { getItemDescription } from '../../backend-mockup.js';
+import React, {Component} from "react";
+import {
+  Jumbotron,
+  Button,
+  Grid,
+  Row,
+  Col,
+  Form,
+  FormGroup,
+  FormControl,
+} from "react-bootstrap";
+import "../css/ProductsTable.css";
+import {getItemDescription} from "../../backend-mockup";
 
 class ProductTables extends Component {
   displayProducts = (product, i) => {
     console.log(product);
+
     return (
       <div key={i}>
         <Jumbotron>
@@ -21,7 +31,9 @@ class ProductTables extends Component {
     return (
       <Grid>
         <Row>
-          {this.props.products.map(x => this.displayProducts(getItemDescription(x.listingID)))}
+          {this.props.products.map(x =>
+            this.displayProducts(getItemDescription(x.listingID)),
+          )}
         </Row>
       </Grid>
     );
