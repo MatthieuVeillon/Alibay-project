@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import React, {Component} from "react";
+import {BrowserRouter, Route} from "react-router-dom";
 import Landing from "./Landing";
 import Navigation from "./Navigation";
 import Market from "./Market";
@@ -16,7 +16,7 @@ const config = {
   databaseURL: "https://alibay-project.firebaseio.com",
   projectId: "alibay-project",
   storageBucket: "alibay-project.appspot.com",
-  messagingSenderId: "523831352588"
+  messagingSenderId: "523831352588",
 };
 
 firebase.initializeApp(config);
@@ -28,29 +28,22 @@ class App extends Component {
     super();
     this.state = {
       productsForSale: [],
-      userId: ""
+      currentUserId: "",
     };
   }
-
-  handleNewProduct = data => {
-    this.setState({
-      productsForSale: this.state.productsForSale.concat([data])
-    });
-  };
-
-  handleLogin = data => {
-    this.setState({ userId: data });
-  };
-
   componentDidMount() {
     firebase
       .auth()
       .signInWithPopup(provider)
       .then(result => {
-        console.log(result);
-        // this.setState({ currentUser: result.user.displayName });
+        this.setState({currentUserId: result.user.uid});
       });
   }
+  handleNewProduct = data => {
+    this.setState({
+      productsForSale: this.state.productsForSale.concat([data]),
+    });
+  };
 
   render() {
     return (
@@ -71,7 +64,12 @@ class App extends Component {
           <Route
             exact
             path="/sell"
-            render={() => <Sell buttonClick={this.handleNewProduct} />}
+            render={() => (
+              <Sell
+                buttonClick={this.handleNewProduct}
+                currentUserId={this.state.currentUserId}
+              />
+            )}
           />
           {/* <Route
             exact

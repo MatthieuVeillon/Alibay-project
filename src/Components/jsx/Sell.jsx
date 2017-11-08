@@ -16,7 +16,7 @@ import {createListing} from "../../backend-mockup";
 
 class Sell extends Component {
   clickAddProduct = () => {
-    const userId = this.inputUserId.value;
+    const userId = this.props.currentUserId;
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
     const ProductName = this.inputProductName.value;
