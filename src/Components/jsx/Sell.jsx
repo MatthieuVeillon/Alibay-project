@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Jumbotron,
   Button,
@@ -8,11 +8,18 @@ import {
   Form,
   FormGroup,
   FormControl,
-  ControlLabel,
+  ControlLabel
 } from "react-bootstrap";
-import {LinkContainer} from "react-router-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "../css/Sell.css";
-import {createListing} from "../../backend-mockup";
+import { createListing } from "../../backend-mockup";
+
+// import all methods for firebase
+import * as firebase from "firebase";
+// import config file to initialize DB for firebase
+import fb from "./firebase-config";
+
+const storageRef = firebase.storage();
 
 class Sell extends Component {
   clickAddProduct = () => {
@@ -20,9 +27,39 @@ class Sell extends Component {
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
     const ProductName = this.inputProductName.value;
-    this.props.buttonClick(
-      createListing(userId, ProductName, productPrice, productDescription),
-    );
+    let productImgUrl;
+    this.uploadImage()
+      .then(url => {
+        productImgUrl = url;
+        console.log("productImgUrl", productImgUrl);
+      })
+      .then(
+        this.props.buttonClick(
+          createListing(
+            userId,
+            ProductName,
+            productPrice,
+            productDescription,
+            productImgUrl
+          )
+        )
+      );
+  };
+
+  //TODO : see if we need to create specific ID associated to pictures
+  uploadImage = () => {
+    let file = this.inputProductImage.files[0];
+    console.log("file", file);
+    return storageRef
+      .ref()
+      .child(`${this.inputProductName}Pic.jpg`)
+      .put(file)
+      .then(() =>
+        storageRef
+          .ref()
+          .child(`${this.inputProductName}Pic.jpg`)
+          .getDownloadURL()
+      );
   };
 
   render() {

@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Jumbotron,
   Button,
@@ -7,12 +7,12 @@ import {
   Col,
   Form,
   FormGroup,
-  FormControl,
+  FormControl
 } from "react-bootstrap";
 
-import {LinkContainer} from "react-router-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "../css/ProductsTable.css";
-import {getItemDescription, allListings} from "../../backend-mockup";
+import { getItemDescription, allListings } from "../../backend-mockup";
 
 class ProductTables extends Component {
   getAlldescription = () => {
@@ -39,6 +39,7 @@ class ProductTables extends Component {
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
+          <img src={desc.imageUrl} alt="" />
           <LinkContainer to="/buy">
             <Button onClick={this.purchaseClick} bsStyle="primary">
               Buy

@@ -1,15 +1,29 @@
 const assert = require("assert");
-const admin = require("firebase-admin");
+// const admin = require("firebase-admin");
+const firebase = require("firebase");
 
 /* Put your firebase code here */
-const serviceAccount = require("/Users/matthieuveillon/Codeprojects/Alibay-project/backend-firebase/alibay-project-firebase-adminsdk-lrf6s-bbc6cf1745.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://alibay-project.firebaseio.com"
-});
+// const serviceAccount = require("/Users/matthieuveillon/Codeprojects/Alibay-project/backend-firebase/alibay-project-firebase-adminsdk-lrf6s-bbc6cf1745.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://alibay-project.firebaseio.com"
+// });
+// const database = admin.database();
 
-const database = admin.database();
+// import firebase from "firebase";
+
+const config = {
+  apiKey: "AIzaSyAYa9W4MdaR2PiqcYf4FTAuUwa5n4FYfms",
+  authDomain: "alibay-project.firebaseapp.com",
+  databaseURL: "https://alibay-project.firebaseio.com",
+  projectId: "alibay-project",
+  storageBucket: "alibay-project.appspot.com",
+  messagingSenderId: "523831352588"
+};
+
+firebase.initializeApp(config);
+const database = firebase.database();
 
 /*
 Before implementing the login functionality, use this function to generate a new UID every time.
@@ -18,6 +32,8 @@ It will decrease your iteration time.
 function genUID() {
   return Math.floor(Math.random() * 100000000);
 }
+
+function uploadPicture() {}
 
 /*
 initializeUserIfNeeded adds the UID to our database unless it's already there
@@ -238,7 +254,7 @@ async function searchForListings(searchTerm) {
 
 // The tests
 async function test() {
-  await database.ref("/").set(null);
+  // await database.ref("/").set(null);
   let sellerID = genUID();
   let buyerID = genUID();
 

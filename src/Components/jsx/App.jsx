@@ -8,20 +8,16 @@ import Sell from "./Sell";
 import Buy from "./Buy";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/App.css";
-import firebase from "firebase";
+// import all methods for firebase
+import * as firebase from "firebase";
+// import config file to initialize DB for firebase
+import fb from "./firebase-config";
 
-const config = {
-  apiKey: "AIzaSyAYa9W4MdaR2PiqcYf4FTAuUwa5n4FYfms",
-  authDomain: "alibay-project.firebaseapp.com",
-  databaseURL: "https://alibay-project.firebaseio.com",
-  projectId: "alibay-project",
-  storageBucket: "alibay-project.appspot.com",
-  messagingSenderId: "523831352588"
-};
-
-firebase.initializeApp(config);
-// backend function for login
+// Firebase instance for login
 const provider = new firebase.auth.GoogleAuthProvider();
+
+// Firebase instance for storage
+const storageRef = firebase.storage().ref();
 
 class App extends Component {
   constructor() {

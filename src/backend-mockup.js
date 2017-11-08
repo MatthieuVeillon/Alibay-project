@@ -40,7 +40,7 @@ createListing adds a new listing to our global state.
       [blurb] A blurb describing the item
     returns: the ID of the new listing
 */
-function createListing(sellerID, productName, price, blurb) {
+function createListing(sellerID, productName, price, blurb, imageUrl) {
   const listingID = genUID(); // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
 
   const listingItem = {
@@ -50,6 +50,7 @@ function createListing(sellerID, productName, price, blurb) {
     blurb,
     available: true,
     listingID,
+    imageUrl
   };
 
   listing[listingID] = listingItem;
@@ -68,7 +69,7 @@ function getItemDescription(listingID) {
     sellerId: listing[listingID].sellerID,
     price: listing[listingID].price,
     listingID: listing[listingID].listingID,
-    blurb: listing[listingID].blurb,
+    blurb: listing[listingID].blurb
   };
 
   return itemToReturn;
@@ -196,5 +197,5 @@ module.exports = {
   allItemsSold,
   allItemsBought,
   allListings,
-  searchForListings,
+  searchForListings
 };
