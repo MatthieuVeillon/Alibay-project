@@ -51,31 +51,8 @@ class ProductTables extends Component {
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
-          <LinkContainer to="/market">
-            <Button
-              onClick={() =>
-                buy(this.props.currentUserId, desc.sellerID, desc.listingID)
-              }
-              bsStyle="primary"
-            >
-              Buy
-            </Button>
-            <ReactModal
-              isOpen={this.state.showModal}
-              contentLabel="Minimal Modal Example"
-              style={{
-                overlay: {
-                  backgroundColor: "rgba(255, 255, 255, 0.75)",
-                },
-                content: {
-                  margin: "100px",
-                },
-              }}
-            >
-              <h2>Congrats for your purchase!</h2>
-              <button onClick={this.handleCloseModal}>Close</button>
-            </ReactModal>
-          </LinkContainer>
+
+          {/* buy(this.props.currentUserId, desc.sellerID, desc.listingID) */}
         </Jumbotron>
       </div>
     ));
@@ -87,6 +64,15 @@ class ProductTables extends Component {
     return (
       <Grid>
         <Row>{this.displayProducts()}</Row>
+        <div>
+          <button onClick={this.handleOpenModal}>Buy</button>
+          <ReactModal
+            isOpen={this.state.showModal}
+            contentLabel="Minimal Modal Example"
+          >
+            <button onClick={this.handleCloseModal}>Close</button>
+          </ReactModal>
+        </div>
       </Grid>
     );
   }
