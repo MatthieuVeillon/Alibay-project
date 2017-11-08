@@ -9,7 +9,8 @@ import {
   FormGroup,
   FormControl,
 } from "react-bootstrap";
-import {ReactModal} from "react-modal";
+
+import ReactModal from "react-modal";
 
 import {LinkContainer} from "react-router-bootstrap";
 import "../css/ProductsTable.css";
@@ -23,14 +24,6 @@ class ProductTables extends Component {
     };
   }
 
-  handleOpenModal() {
-    this.setState({showModal: true});
-  }
-
-  handleCloseModal() {
-    this.setState({showModal: false});
-  }
-
   getAlldescription = () => {
     // an array of available listing IDs
     const ids = allListings();
@@ -39,7 +32,13 @@ class ProductTables extends Component {
 
     return descriptionsArray;
   };
+  handleCloseModal = () => {
+    this.setState({showModal: false});
+  };
 
+  handleOpenModal = () => {
+    this.setState({showModal: true});
+  };
   displayProducts = () => {
     const descriptions = this.getAlldescription();
 
@@ -51,7 +50,17 @@ class ProductTables extends Component {
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
-
+          <Button bsStyle="primary" onClick={this.handleOpenModal}>
+            Buy
+          </Button>
+          <div>
+            <ReactModal
+              isOpen={this.state.showModal}
+              contentLabel="Minimal Modal Example"
+            >
+              <Button onClick={this.handleCloseModal}>Close</Button>
+            </ReactModal>
+          </div>
           {/* buy(this.props.currentUserId, desc.sellerID, desc.listingID) */}
         </Jumbotron>
       </div>
@@ -64,15 +73,6 @@ class ProductTables extends Component {
     return (
       <Grid>
         <Row>{this.displayProducts()}</Row>
-        <div>
-          <button onClick={this.handleOpenModal}>Buy</button>
-          <ReactModal
-            isOpen={this.state.showModal}
-            contentLabel="Minimal Modal Example"
-          >
-            <button onClick={this.handleCloseModal}>Close</button>
-          </ReactModal>
-        </div>
       </Grid>
     );
   }
