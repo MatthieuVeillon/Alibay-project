@@ -10,31 +10,38 @@ import {
   FormControl,
 } from "react-bootstrap";
 import "../css/ProductsTable.css";
-import {getItemDescription} from "../../backend-mockup";
+import {getItemDescription, allListings} from "../../backend-mockup";
 
 class ProductTables extends Component {
-  displayProducts = (product, i) => {
-    console.log(product);
+  getAlldescription = () => {
+    // an array of available listing IDs
+    const ids = allListings();
+    // an array of available listing full description
+    const descriptionsArray = ids.map(id => getItemDescription(id));
 
-    return (
+    return descriptionsArray;
+  };
+
+  displayProducts = () => {
+    const descriptions = this.getAlldescription();
+    // iterate through array of descrpition object to populate an array of html elements
+    const htmlDescription = descriptions.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
-          <h3>{product.productName}</h3>
-          <h4>Price: {product.price}</h4>
-          <h4>Description: {product.blurb}</h4>
+          <h3>{desc.productName}</h3>
+          <h4>Price: {desc.price}</h4>
+          <h4>Description: {desc.blurb}</h4>
         </Jumbotron>
       </div>
-    );
+    ));
+
+    return htmlDescription;
   };
 
   render() {
     return (
       <Grid>
-        <Row>
-          {this.props.products.map(x =>
-            this.displayProducts(getItemDescription(x.listingID)),
-          )}
-        </Row>
+        <Row>{this.displayProducts()}</Row>
       </Grid>
     );
   }

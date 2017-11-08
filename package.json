@@ -2,6 +2,11 @@
   "name": "alibay-project",
   "version": "0.1.0",
   "private": true,
+  "quokka": {
+    "babel": {
+      "presets": ["react-app"]
+    }
+  },
   "dependencies": {
     "bootstrap": "^3.3.7",
     "react": "^16.0.0",
