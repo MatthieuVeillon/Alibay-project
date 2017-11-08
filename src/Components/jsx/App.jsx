@@ -8,6 +8,7 @@ import Sell from "./Sell";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/App.css";
 import firebase from "firebase";
+import {initializeUserIfNeeded} from "../../backend-mockup";
 
 const config = {
   apiKey: "AIzaSyAYa9W4MdaR2PiqcYf4FTAuUwa5n4FYfms",
@@ -35,10 +36,12 @@ class App extends Component {
       .auth()
       .signInWithPopup(provider)
       .then(result => {
+        console.log(result.user.uid);
         this.setState({currentUserId: result.user.uid});
       });
   }
   handleNewProduct = data => {
+    initializeUserIfNeeded(this.state.currentUserId);
     this.setState({
       productsForSale: this.state.productsForSale.concat([data]),
     });
@@ -52,7 +55,12 @@ class App extends Component {
           <Route exact path="/" component={Landing} />
           <Route
             path="/market"
-            render={() => <Market products={this.state.productsForSale} />}
+            render={() => (
+              <Market
+                currentUserId={this.state.currentUserId}
+                products={this.state.productsForSale}
+              />
+            )}
           />
 
           <Route
@@ -67,8 +75,8 @@ class App extends Component {
             path="/sell"
             render={() => (
               <Sell
-                addProductToState={this.handleNewProduct}
                 currentUserId={this.state.currentUserId}
+                addProductToState={this.handleNewProduct}
               />
             )}
           />

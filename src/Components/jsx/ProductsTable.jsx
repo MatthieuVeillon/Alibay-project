@@ -39,6 +39,10 @@ class ProductTables extends Component {
   handleOpenModal = () => {
     this.setState({showModal: true});
   };
+  initializeBuy = (x, y) => {
+    // buy(this.props.currentUserId, x, y);
+    console.log(this.props.currentUserId);
+  };
   displayProducts = () => {
     const descriptions = this.getAlldescription();
 
@@ -50,7 +54,10 @@ class ProductTables extends Component {
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
-          <Button bsStyle="primary" onClick={this.handleOpenModal}>
+          <Button
+            bsStyle="primary"
+            onClick={() => this.initializeBuy(desc.sellerID, desc.listingID)}
+          >
             Buy
           </Button>
           <div>
@@ -58,10 +65,10 @@ class ProductTables extends Component {
               isOpen={this.state.showModal}
               contentLabel="Minimal Modal Example"
             >
+              <h3>congrats for your buy</h3>
               <Button onClick={this.handleCloseModal}>Close</Button>
             </ReactModal>
           </div>
-          {/* buy(this.props.currentUserId, desc.sellerID, desc.listingID) */}
         </Jumbotron>
       </div>
     ));

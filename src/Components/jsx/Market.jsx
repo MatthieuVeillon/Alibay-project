@@ -15,18 +15,6 @@ import ProductsTable from "./ProductsTable";
 import ReactModal from "react-modal";
 
 class Market extends Component {
-  constructor() {
-    super();
-    this.state = {
-      purchaseaddProductToStateed: false,
-    };
-  }
-  purchaseClick = () => {
-    this.setState({purchaseaddProductToStateed: true});
-  };
-  componentDidMmount = () => {
-    this.setState({purchaseaddProductToStateed: false});
-  };
   render() {
     return (
       <Grid className="componentHeader">
@@ -43,7 +31,10 @@ class Market extends Component {
                 <FormControl type="text" placeholder="Search" />
               </FormGroup>
             </Form>
-            <ProductsTable products={this.props.products} />
+            <ProductsTable
+              currentUserId={this.props.currentUserId}
+              products={this.props.products}
+            />
           </Col>
         </Row>
       </Grid>
