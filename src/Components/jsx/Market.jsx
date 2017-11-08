@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+
 import {
   Jumbotron,
   Button,
@@ -19,7 +20,7 @@ class Market extends Component {
   }
   render() {
     return (
-      <Grid className="searchProducts">
+      <Grid className="componentHeader">
         <Row>
           <Col xs={12}>
             <h1>Search products</h1>

@@ -9,6 +9,8 @@ import {
   FormGroup,
   FormControl,
 } from "react-bootstrap";
+
+import {LinkContainer} from "react-router-bootstrap";
 import "../css/ProductsTable.css";
 import {getItemDescription, allListings} from "../../backend-mockup";
 
@@ -31,6 +33,10 @@ class ProductTables extends Component {
           <h3>{desc.productName}</h3>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
+
+          <LinkContainer to="/buy">
+            <Button bsStyle="primary">Buy</Button>
+          </LinkContainer>
         </Jumbotron>
       </div>
     ));

@@ -25,7 +25,7 @@ class Navigation extends Component {
             <LinkContainer to="/sell">
               <NavItem eventKey={2}>Sell</NavItem>
             </LinkContainer>
-            <LinkContainer to="/account">
+            <LinkContainer to="/accountLogin">
               <NavItem eventKey={3}>Account</NavItem>
             </LinkContainer>
           </Nav>
