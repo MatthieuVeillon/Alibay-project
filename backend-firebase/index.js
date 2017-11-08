@@ -2,7 +2,7 @@ const assert = require("assert");
 const admin = require("firebase-admin");
 
 /* Put your firebase code here */
-const serviceAccount = require("/Users/matthieuveillon/Desktop/Alibay-project/backend-mockup/alibay-project-firebase-adminsdk-lrf6s-bbc6cf1745.json");
+const serviceAccount = require("/Users/matthieuveillon/Codeprojects/Alibay-project/backend-firebase/alibay-project-firebase-adminsdk-lrf6s-bbc6cf1745.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
