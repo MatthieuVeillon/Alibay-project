@@ -12,12 +12,20 @@ import {
 } from "react-bootstrap";
 import "../css/Market.css";
 import ProductsTable from "./ProductsTable";
-
+import Buy from "./Buy";
 class Market extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
+  constructor() {
+    super();
+    this.state = {
+      purchaseButtonClicked: false,
+    };
   }
+  purchaseClick = () => {
+    this.setState({purchaseButtonClicked: true});
+  };
+  componentDidMmount = () => {
+    this.setState({purchaseButtonClicked: false});
+  };
   render() {
     return (
       <Grid className="componentHeader">
@@ -38,6 +46,17 @@ class Market extends Component {
           </Col>
         </Row>
       </Grid>
+
+
+       <div>
+        {this.state.purchaseButtonClicked ? (
+          <Buy />
+        ) : (
+          <Grid>
+            <Row>{this.displayProducts()}</Row>
+          </Grid>
+        )}
+      </div>
     );
   }
 }

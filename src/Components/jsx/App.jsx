@@ -53,7 +53,11 @@ class App extends Component {
             path="/sell"
             render={() => <Sell buttonClick={this.handleNewProduct} />}
           />
-          <Route exact path="/buy" render={() => <Buy />} />
+          {/* <Route
+            exact
+            path="/buy"
+            render={() => <Buy products={this.state.productsForSale} />}
+          /> */}
         </div>
       </BrowserRouter>
     );

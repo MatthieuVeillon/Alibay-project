@@ -31,11 +31,15 @@ class ProductTables extends Component {
       <div key={i}>
         <Jumbotron>
           <h3>{desc.productName}</h3>
+          <h4>Seller id: {desc.sellerId}</h4>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
+          <h4>Item id: {desc.listingID}</h4>
 
           <LinkContainer to="/buy">
-            <Button bsStyle="primary">Buy</Button>
+            <Button onClick={this.purchaseClick} bsStyle="primary">
+              Buy
+            </Button>
           </LinkContainer>
         </Jumbotron>
       </div>

@@ -30,15 +30,14 @@ class Buy extends Component {
   handleCloseModal = () => {
     this.setState({showModal: false});
   };
-  // clickAddProduct = () => {
-  //   const userId = this.inputUserId.value;
-  //   const productPrice = this.inputProductPrice.value;
-  //   const productDescription = this.inputProductDescription.value;
-  //   const ProductName = this.inputProductName.value;
-  //   this.props.buttonClick(
-  //     createListing(userId, ProductName, productPrice, productDescription),
-  //   );
-  // };
+  clickSellProduct = () => {
+    this.handleOpenModal();
+    console.log(this.props.products);
+    // const buyerId = this.inputBuyerId.value;
+    // const sellerID = this.inputProductPrice.value;
+    // const listingID = this.inputProductDescription.value;
+    // buy(buyerId, sellerID, listingID)
+  };
 
   render() {
     return (
@@ -60,7 +59,7 @@ class Buy extends Component {
             </Form>
 
             <div>
-              <Button bsStyle="primary" onClick={this.handleOpenModal}>
+              <Button bsStyle="primary" onClick={this.clickSellProduct}>
                 Finalize purchase
               </Button>
               <ReactModal
