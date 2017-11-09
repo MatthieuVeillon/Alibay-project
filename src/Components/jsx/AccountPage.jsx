@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Jumbotron,
   Button,
@@ -7,13 +7,13 @@ import {
   Col,
   Form,
   FormGroup,
-  FormControl,
+  FormControl
 } from "react-bootstrap";
 import "../css/Account.css";
 import {
   allItemsSold,
   getItemDescription,
-  allItemsBought,
+  allItemsBought
 } from "../../backend-mockup";
 
 class AccountPage extends Component {
@@ -52,6 +52,7 @@ class AccountPage extends Component {
           <h3>{desc.productName}</h3>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
+          <img src={desc.imageUrl} alt="" />
         </Jumbotron>
       </div>
     ));

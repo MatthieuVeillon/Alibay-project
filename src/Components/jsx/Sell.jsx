@@ -27,24 +27,22 @@ class Sell extends Component {
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
     const ProductName = this.inputProductName.value;
-<<<<<<< HEAD
     let productImgUrl;
     this.uploadImage()
       .then(url => {
         productImgUrl = url;
         console.log("productImgUrl", productImgUrl);
       })
-      .then(
-        this.props.buttonClick(
-          createListing(
-            userId,
-            ProductName,
-            productPrice,
-            productDescription,
-            productImgUrl
-          )
-        )
-      );
+      .then(() => {
+        console.log("hey its createListing");
+        createListing(
+          userId,
+          ProductName,
+          productPrice,
+          productDescription,
+          productImgUrl
+        );
+      });
   };
 
   //TODO : see if we need to create specific ID associated to pictures
@@ -53,18 +51,14 @@ class Sell extends Component {
     console.log("file", file);
     return storageRef
       .ref()
-      .child(`${this.inputProductName}Pic.jpg`)
+      .child(`${file.name}`)
       .put(file)
       .then(() =>
         storageRef
           .ref()
-          .child(`${this.inputProductName}Pic.jpg`)
+          .child(`${file.name}`)
           .getDownloadURL()
       );
-=======
-
-    createListing(userId, ProductName, productPrice, productDescription);
->>>>>>> front-end-React
   };
 
   render() {

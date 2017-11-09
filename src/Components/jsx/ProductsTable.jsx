@@ -54,6 +54,7 @@ class ProductTables extends Component {
   };
   displayProducts = () => {
     // iterate through array of descrpition object to populate an array of html elements
+    // console.log("img url", this.state.descriptions[0].imageUrl);
     const htmlDescription = this.state.descriptions.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
@@ -61,7 +62,7 @@ class ProductTables extends Component {
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
-          <img src={desc.imageUrl} alt="" />
+          <img src={desc.imageUrl} alt="alt" />
           <Button
             bsStyle="primary"
             onClick={() => this.initializeBuy(desc.sellerID, desc.listingID)}
