@@ -21,23 +21,12 @@ import fb from "./firebase-config";
 
 const storageRef = firebase.storage();
 
-// import all methods for firebase
-import * as firebase from "firebase";
-// import config file to initialize DB for firebase
-import fb from "./firebase-config";
-
-const storageRef = firebase.storage();
-
 class Sell extends Component {
   clickAddProduct = () => {
     const userId = this.props.currentUserId;
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
-
     const ProductName = this.inputProductName.value;
-    let productImgUrl;
-
-    const productName = this.inputProductName.value;
     let productImgUrl;
     this.uploadImage()
       .then(url => {

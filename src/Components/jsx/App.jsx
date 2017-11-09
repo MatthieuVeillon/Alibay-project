@@ -10,7 +10,6 @@ import {initializeUserIfNeeded} from "../../backend-mockup";
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/App.css";
 
-import {initializeUserIfNeeded} from "../../backend-mockup";
 // import all methods for firebase
 import * as firebase from "firebase";
 // import config file to initialize DB for firebase
