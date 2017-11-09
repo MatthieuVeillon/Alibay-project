@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Jumbotron,
   Button,
@@ -7,16 +7,16 @@ import {
   Col,
   Form,
   FormGroup,
-  FormControl,
+  FormControl
 } from "react-bootstrap";
 import ReactModal from "react-modal";
-import {LinkContainer} from "react-router-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "../css/ProductsTable.css";
 import {
   getItemDescription,
   allListings,
   buy,
-  searchForListings,
+  searchForListings
 } from "../../backend-mockup";
 
 class ProductTables extends Component {
@@ -24,37 +24,57 @@ class ProductTables extends Component {
     super(props);
     this.state = {
       showModal: false,
-      descriptions: this.getAlldescription(),
+      descriptions: []
     };
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({
-      descriptions: this.getAlldescription(),
-    });
+
+  updateDescriptionsState = () => {
+    console.log("initial", this.state.descriptions);
+    this.getAlldescription().then(result =>
+      this.setState({ descriptions: result }, () =>
+        console.log("second state", this.state.descriptions)
+      )
+    );
+  };
+
+  componentWillMount() {
+    console.log("cwm", this.state.descriptions);
+    this.updateDescriptionsState();
   }
-  getAlldescription = () => {
+
+  componentWillReceiveProps(nextProps) {
+    console.log("willreceiveprops", this.state.descriptions);
+    this.updateDescriptionsState();
+  }
+  getAlldescription = async () => {
     // an array of available listing IDs
-    const ids = searchForListings(this.props.searchTerm);
+    const ids = await searchForListings(this.props.searchTerm);
     // an array of available listing full description
-    const descriptionsArray = ids.map(id => getItemDescription(id));
+    const descriptionsArray = Promise.all(
+      ids.map(async id => await getItemDescription(id))
+    );
 
     return descriptionsArray;
   };
   handleCloseModal = () => {
-    this.setState({showModal: false});
+    this.setState({ showModal: false });
   };
 
   handleOpenModal = () => {
-    this.setState({showModal: true});
+    this.setState({ showModal: true });
   };
   initializeBuy = (x, y) => {
-    buy(this.props.currentUserId, x, y);
-    this.handleOpenModal();
-    this.setState({descriptions: this.getAlldescription()});
+    buy(this.props.currentUserId, x, y)
+      .then(() => this.handleOpenModal())
+      .then(() => this.getAlldescription())
+      .then(result =>
+        result.then(result => this.setState({ descriptions: result }))
+      );
   };
   displayProducts = () => {
     // iterate through array of descrpition object to populate an array of html elements
-    // console.log("img url", this.state.descriptions[0].imageUrl);
+    console.log("this state desc", this.state.descriptions);
+
     const htmlDescription = this.state.descriptions.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
@@ -91,8 +111,8 @@ class ProductTables extends Component {
                 right: "auto",
                 bottom: "auto",
                 marginRight: "-50%",
-                transform: "translate(-50%, -50%)",
-              },
+                transform: "translate(-50%, -50%)"
+              }
             }}
           >
             <h3>Congrats! Your buy was successful.</h3>

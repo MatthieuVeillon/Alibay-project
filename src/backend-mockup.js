@@ -1,28 +1,11 @@
+import * as firebase from "firebase";
+// import config file to initialize DB for firebase
+import fb from "./Components/jsx/firebase-config";
+
 const assert = require("assert");
 // const admin = require("firebase-admin");
-const firebase = require("firebase");
+// import all methods for firebase
 
-/* Put your firebase code here */
-
-// const serviceAccount = require("/Users/matthieuveillon/Codeprojects/Alibay-project/backend-firebase/alibay-project-firebase-adminsdk-lrf6s-bbc6cf1745.json");
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://alibay-project.firebaseio.com"
-// });
-// const database = admin.database();
-
-// import firebase from "firebase";
-
-const config = {
-  apiKey: "AIzaSyAYa9W4MdaR2PiqcYf4FTAuUwa5n4FYfms",
-  authDomain: "alibay-project.firebaseapp.com",
-  databaseURL: "https://alibay-project.firebaseio.com",
-  projectId: "alibay-project",
-  storageBucket: "alibay-project.appspot.com",
-  messagingSenderId: "523831352588"
-};
-
-firebase.initializeApp(config);
 const database = firebase.database();
 
 /*
@@ -251,6 +234,7 @@ Once an item is sold, it will not be returned by searchForListings
 async function searchForListings(searchTerm) {
   const response = await database.ref("/listing").once("value");
   const itemsInListing = response.val();
+  console.log("itemsInListing", itemsInListing);
   const matchedID = [];
 
   for (const item in itemsInListing) {
@@ -261,59 +245,59 @@ async function searchForListings(searchTerm) {
       }
     }
   }
-
+  console.log("matchID", matchedID);
   return matchedID;
 }
 
-// The tests
-async function test() {
-  // await database.ref("/").set(null);
-  const sellerID = genUID();
-  const buyerID = genUID();
+// // The tests
+// async function test() {
+//   // await database.ref("/").set(null);
+//   const sellerID = genUID();
+//   const buyerID = genUID();
 
-  await initializeUserIfNeeded(sellerID);
-  await initializeUserIfNeeded(buyerID);
+//   await initializeUserIfNeeded(sellerID);
+//   await initializeUserIfNeeded(buyerID);
 
-  const listing1ID = await createListing(sellerID, 500000, "A very nice boat");
-  const listing2ID = await createListing(sellerID, 1000, "Faux fur gloves");
-  const listing3ID = await createListing(sellerID, 100, "Running shoes");
-  const product2Description = await getItemDescription(listing2ID);
+//   const listing1ID = await createListing(sellerID, 500000, "A very nice boat");
+//   const listing2ID = await createListing(sellerID, 1000, "Faux fur gloves");
+//   const listing3ID = await createListing(sellerID, 100, "Running shoes");
+//   const product2Description = await getItemDescription(listing2ID);
 
-  await buy(buyerID, sellerID, listing2ID);
-  await buy(buyerID, sellerID, listing3ID);
+//   await buy(buyerID, sellerID, listing2ID);
+//   await buy(buyerID, sellerID, listing3ID);
 
-  const allSold = await allItemsSold(sellerID);
-  const soldDescriptions = await Promise.all(allSold.map(getItemDescription));
-  console.log("1step");
-  const allBought = await allItemsBought(buyerID);
-  console.log("2step");
-  const allBoughtDescriptions = await Promise.all(
-    allBought.map(getItemDescription)
-  );
-  console.log("before Search");
-  const listings = await allListings();
-  const boatListings = await searchForListings("boat");
-  console.log("boatListings", boatListings);
-  const shoeListings = await searchForListings("shoes");
-  console.log("shoelistng", shoeListings);
-  console.log("after search");
-  const boatDescription = await getItemDescription(listings[0]);
-  const boatBlurb = boatDescription.blurb;
-  const boatPrice = boatDescription.price;
-  console.log("last step before assert");
+//   const allSold = await allItemsSold(sellerID);
+//   const soldDescriptions = await Promise.all(allSold.map(getItemDescription));
+//   console.log("1step");
+//   const allBought = await allItemsBought(buyerID);
+//   console.log("2step");
+//   const allBoughtDescriptions = await Promise.all(
+//     allBought.map(getItemDescription)
+//   );
+//   console.log("before Search");
+//   const listings = await allListings();
+//   const boatListings = await searchForListings("boat");
+//   console.log("boatListings", boatListings);
+//   const shoeListings = await searchForListings("shoes");
+//   console.log("shoelistng", shoeListings);
+//   console.log("after search");
+//   const boatDescription = await getItemDescription(listings[0]);
+//   const boatBlurb = boatDescription.blurb;
+//   const boatPrice = boatDescription.price;
+//   console.log("last step before assert");
 
-  assert(allSold.length == 2); // The seller has sold 2 items
-  assert(allBought.length == 2); // The buyer has bought 2 items
-  assert(listings.length == 1); // Only the boat is still on sale
-  assert(boatListings.length == 1); // The boat hasn't been sold yet
-  assert(shoeListings.length == 0); // The shoes have been sold
-  assert(boatBlurb == "A very nice boat");
-  assert(boatPrice == 500000);
-  console.log("complete");
-}
-test();
+//   assert(allSold.length == 2); // The seller has sold 2 items
+//   assert(allBought.length == 2); // The buyer has bought 2 items
+//   assert(listings.length == 1); // Only the boat is still on sale
+//   assert(boatListings.length == 1); // The boat hasn't been sold yet
+//   assert(shoeListings.length == 0); // The shoes have been sold
+//   assert(boatBlurb == "A very nice boat");
+//   assert(boatPrice == 500000);
+//   console.log("complete");
+// }
+// test();
 
-module.exports = {
+export {
   genUID,
   initializeUserIfNeeded,
   createListing,

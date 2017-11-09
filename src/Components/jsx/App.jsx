@@ -1,11 +1,11 @@
-import React, {Component} from "react";
-import {BrowserRouter, Route} from "react-router-dom";
+import React, { Component } from "react";
+import { BrowserRouter, Route } from "react-router-dom";
 import Landing from "./Landing";
 import Navigation from "./Navigation";
 import Market from "./Market";
 import AccountPage from "./AccountPage";
 import Sell from "./Sell";
-import {initializeUserIfNeeded} from "../../backend-mockup";
+import { initializeUserIfNeeded } from "../../backend-mockup.js";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "../css/App.css";
@@ -25,7 +25,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUserId: "",
+      currentUserId: ""
     };
   }
   componentDidMount() {
@@ -33,7 +33,7 @@ class App extends Component {
       .auth()
       .signInWithPopup(provider)
       .then(result => {
-        this.setState({currentUserId: result.user.uid});
+        this.setState({ currentUserId: result.user.uid });
       })
       .then(() => initializeUserIfNeeded(this.state.currentUserId));
   }
