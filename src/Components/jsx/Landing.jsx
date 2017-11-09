@@ -9,7 +9,7 @@ class Landing extends Component {
       <div id="homeViewPage">
         <Grid>
           <Row>
-            <Col xs={12}>
+            <Col md={12}>
               <Jumbotron id="landingJumbotron">
                 <h1>Marketplace of the future</h1>
                 <p>

@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   Jumbotron,
   Button,
@@ -7,16 +7,16 @@ import {
   Col,
   Form,
   FormGroup,
-  FormControl
+  FormControl,
 } from "react-bootstrap";
 import ReactModal from "react-modal";
-import { LinkContainer } from "react-router-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
 import "../css/ProductsTable.css";
 import {
   getItemDescription,
   allListings,
   buy,
-  searchForListings
+  searchForListings,
 } from "../../backend-mockup";
 
 class ProductTables extends Component {
@@ -24,12 +24,12 @@ class ProductTables extends Component {
     super(props);
     this.state = {
       showModal: false,
-      descriptions: this.getAlldescription()
+      descriptions: this.getAlldescription(),
     };
   }
   componentWillReceiveProps(nextProps) {
     this.setState({
-      descriptions: this.getAlldescription()
+      descriptions: this.getAlldescription(),
     });
   }
   getAlldescription = () => {
@@ -41,16 +41,16 @@ class ProductTables extends Component {
     return descriptionsArray;
   };
   handleCloseModal = () => {
-    this.setState({ showModal: false });
+    this.setState({showModal: false});
   };
 
   handleOpenModal = () => {
-    this.setState({ showModal: true });
+    this.setState({showModal: true});
   };
   initializeBuy = (x, y) => {
     buy(this.props.currentUserId, x, y);
     this.handleOpenModal();
-    this.setState({ descriptions: this.getAlldescription() });
+    this.setState({descriptions: this.getAlldescription()});
   };
   displayProducts = () => {
     // iterate through array of descrpition object to populate an array of html elements
@@ -63,6 +63,7 @@ class ProductTables extends Component {
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
           <img src={desc.imageUrl} alt="alt" />
+          <img src={desc.imageUrl} alt="" />
           <Button
             bsStyle="primary"
             onClick={() => this.initializeBuy(desc.sellerID, desc.listingID)}
@@ -90,8 +91,8 @@ class ProductTables extends Component {
                 right: "auto",
                 bottom: "auto",
                 marginRight: "-50%",
-                transform: "translate(-50%, -50%)"
-              }
+                transform: "translate(-50%, -50%)",
+              },
             }}
           >
             <h3>Congrats! Your buy was successful.</h3>

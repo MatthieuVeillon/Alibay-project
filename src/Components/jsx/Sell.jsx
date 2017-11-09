@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import {
   Jumbotron,
   Button,
@@ -8,11 +8,18 @@ import {
   Form,
   FormGroup,
   FormControl,
-  ControlLabel
+  ControlLabel,
 } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import {LinkContainer} from "react-router-bootstrap";
 import "../css/Sell.css";
-import { createListing } from "../../backend-mockup";
+import {createListing} from "../../backend-mockup";
+
+// import all methods for firebase
+import * as firebase from "firebase";
+// import config file to initialize DB for firebase
+import fb from "./firebase-config";
+
+const storageRef = firebase.storage();
 
 // import all methods for firebase
 import * as firebase from "firebase";
@@ -26,7 +33,11 @@ class Sell extends Component {
     const userId = this.props.currentUserId;
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
+
     const ProductName = this.inputProductName.value;
+    let productImgUrl;
+
+    const productName = this.inputProductName.value;
     let productImgUrl;
     this.uploadImage()
       .then(url => {
@@ -40,15 +51,15 @@ class Sell extends Component {
           ProductName,
           productPrice,
           productDescription,
-          productImgUrl
+          productImgUrl,
         );
       });
   };
 
-  //TODO : see if we need to create specific ID associated to pictures
+  // TODO : see if we need to create specific ID associated to pictures
   uploadImage = () => {
-    let file = this.inputProductImage.files[0];
-    console.log("file", file);
+    const file = this.inputProductImage.files[0];
+
     return storageRef
       .ref()
       .child(`${file.name}`)
@@ -57,7 +68,7 @@ class Sell extends Component {
         storageRef
           .ref()
           .child(`${file.name}`)
-          .getDownloadURL()
+          .getDownloadURL(),
       );
   };
 

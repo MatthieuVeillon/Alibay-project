@@ -6,7 +6,7 @@ const config = {
   databaseURL: "https://alibay-project.firebaseio.com",
   projectId: "alibay-project",
   storageBucket: "alibay-project.appspot.com",
-  messagingSenderId: "523831352588"
+  messagingSenderId: "523831352588",
 };
 const fb = firebase.initializeApp(config);
 export default fb;

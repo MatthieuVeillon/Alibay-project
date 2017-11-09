@@ -51,7 +51,7 @@ function createListing(sellerID, productName, price, blurb, imageUrl) {
     blurb,
     available: true,
     listingID,
-    imageUrl
+    imageUrl,
   };
 
   listing[listingID] = listingItem;
@@ -73,7 +73,7 @@ function getItemDescription(listingID) {
     price: listing[listingID].price,
     listingID: listing[listingID].listingID,
     blurb: listing[listingID].blurb,
-    imageUrl: listing[listingID].imageUrl
+    imageUrl: listing[listingID].imageUrl,
   };
 
   return itemToReturn;
@@ -205,5 +205,5 @@ module.exports = {
   allItemsSold,
   allItemsBought,
   allListings,
-  searchForListings
+  searchForListings,
 };
