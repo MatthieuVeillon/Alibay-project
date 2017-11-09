@@ -27,7 +27,6 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      productsForSale: [],
       currentUserId: "",
     };
   }
@@ -36,16 +35,10 @@ class App extends Component {
       .auth()
       .signInWithPopup(provider)
       .then(result => {
-        console.log(result.user.uid);
         this.setState({currentUserId: result.user.uid});
-      });
+      })
+      .then(() => initializeUserIfNeeded(this.state.currentUserId));
   }
-  handleNewProduct = data => {
-    initializeUserIfNeeded(this.state.currentUserId);
-    this.setState({
-      productsForSale: this.state.productsForSale.concat([data]),
-    });
-  };
 
   render() {
     return (
@@ -55,12 +48,7 @@ class App extends Component {
           <Route exact path="/" component={Landing} />
           <Route
             path="/market"
-            render={() => (
-              <Market
-                currentUserId={this.state.currentUserId}
-                products={this.state.productsForSale}
-              />
-            )}
+            render={() => <Market currentUserId={this.state.currentUserId} />}
           />
 
           <Route
@@ -76,12 +64,7 @@ class App extends Component {
           <Route
             exact
             path="/sell"
-            render={() => (
-              <Sell
-                currentUserId={this.state.currentUserId}
-                addProductToState={this.handleNewProduct}
-              />
-            )}
+            render={() => <Sell currentUserId={this.state.currentUserId} />}
           />
         </div>
       </BrowserRouter>

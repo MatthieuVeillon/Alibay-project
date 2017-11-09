@@ -79,8 +79,20 @@ class ProductTables extends Component {
       <Grid>
         <Row>{this.displayProducts()}</Row>
         <div>
-          <ReactModal isOpen={this.state.showModal}>
-            <h3>congrats for your buy</h3>
+          <ReactModal
+            isOpen={this.state.showModal}
+            style={{
+              content: {
+                top: "50%",
+                left: "50%",
+                right: "auto",
+                bottom: "auto",
+                marginRight: "-50%",
+                transform: "translate(-50%, -50%)",
+              },
+            }}
+          >
+            <h3>Congrats! Your buy was successful.</h3>
             <Button bsStyle="primary" onClick={this.handleCloseModal}>
               Close
             </Button>

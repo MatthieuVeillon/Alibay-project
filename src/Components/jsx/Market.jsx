@@ -63,7 +63,6 @@ class Market extends Component {
             <ProductsTable
               searchTerm={this.state.searchTerm}
               currentUserId={this.props.currentUserId}
-              products={this.props.products}
             />
           </Col>
         </Row>

@@ -20,16 +20,15 @@ class Sell extends Component {
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
     const ProductName = this.inputProductName.value;
-    this.props.addProductToState(
-      createListing(userId, ProductName, productPrice, productDescription),
-    );
+
+    createListing(userId, ProductName, productPrice, productDescription);
   };
 
   render() {
     return (
       <Grid id="sellProductForm">
         <Row>
-          <Col xs={12}>
+          <Col md={12}>
             <Form>
               <FormGroup controlId="formBasicText">
                 <ControlLabel>Product Name</ControlLabel>
