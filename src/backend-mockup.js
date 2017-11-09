@@ -66,7 +66,7 @@ getItemDescription returns the description of a listing
 function getItemDescription(listingID) {
   const itemToReturn = {
     productName: listing[listingID].productName,
-    sellerId: listing[listingID].sellerID,
+    sellerID: listing[listingID].sellerID,
     price: listing[listingID].price,
     listingID: listing[listingID].listingID,
     blurb: listing[listingID].blurb
@@ -90,6 +90,7 @@ The seller will see the listing in his history of items sold - DONE
 function buy(buyerID, sellerID, listingID) {
   if (listing[listingID].available) {
     itemsBought[buyerID] = itemsBought[buyerID].concat([listingID]); // QUESTION  : should we include the listing ID ? at the top we're considering ItemsBought as an array The buyer will see the listing in his history of purchases
+    console.log(itemsSold, sellerID);
     itemsSold[sellerID] = itemsSold[sellerID].concat([listingID]); // The seller will see the listing in his history of items sold
     listing[listingID].available = false;
   } else {
@@ -143,7 +144,10 @@ function searchForListings(searchTerm) {
 
   for (const item in listing) {
     if (listing[item].available === true) {
-      if (listing[item].blurb.includes(searchTerm)) {
+      if (
+        listing[item].blurb.includes(searchTerm) ||
+        listing[item].productName.includes(searchTerm)
+      ) {
         matchedSearchedItems.push(item);
       }
     }

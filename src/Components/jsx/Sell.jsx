@@ -23,10 +23,11 @@ const storageRef = firebase.storage();
 
 class Sell extends Component {
   clickAddProduct = () => {
-    const userId = this.inputUserId.value;
+    const userId = this.props.currentUserId;
     const productPrice = this.inputProductPrice.value;
     const productDescription = this.inputProductDescription.value;
     const ProductName = this.inputProductName.value;
+<<<<<<< HEAD
     let productImgUrl;
     this.uploadImage()
       .then(url => {
@@ -60,23 +61,19 @@ class Sell extends Component {
           .child(`${this.inputProductName}Pic.jpg`)
           .getDownloadURL()
       );
+=======
+
+    createListing(userId, ProductName, productPrice, productDescription);
+>>>>>>> front-end-React
   };
 
   render() {
     return (
       <Grid id="sellProductForm">
         <Row>
-          <Col xs={12}>
+          <Col md={12}>
             <Form>
               <FormGroup controlId="formBasicText">
-                <ControlLabel>UserId</ControlLabel>
-                <FormControl
-                  inputRef={r => {
-                    this.inputUserId = r;
-                  }}
-                  type="text"
-                  placeholder="Enter text"
-                />
                 <ControlLabel>Product Name</ControlLabel>
                 <FormControl
                   inputRef={r => {

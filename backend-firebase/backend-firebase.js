@@ -44,40 +44,40 @@ returns: A promise - DONE
 // get the itemsBought from firebase databse and check if the user is already there - otherwsie push a new user to the DB
 
 async function initializeBuyerIfNeeded(uid) {
-  let responseBuyers = await database.ref("/itemsBought").once("value");
+  const responseBuyers = await database.ref("/itemsBought").once("value");
   let buyerInDB = false;
 
-  for (let buyerID in responseBuyers.val()) {
-    //REFAC, anything better to check ? object.keys and iterate over every ?
+  for (const buyerID in responseBuyers.val()) {
+    // REFAC, anything better to check ? object.keys and iterate over every ?
     if (buyerID == uid) {
       buyerInDB = true;
     }
   }
   if (!buyerInDB) {
-    let test = database.ref("/itemsBought/" + uid).set(["initial state"]);
+    const test = database.ref(`/itemsBought/${uid}`).set(["initial state"]);
   }
 }
 // get the itemsSold from firebase databse and check if the user is already there - otherwsie push a new user to the DB
 
 async function initializeSellerIfNeeded(uid) {
-  let responseSellers = await database.ref("/itemsSold").once("value");
+  const responseSellers = await database.ref("/itemsSold").once("value");
   let sellerInDB = false;
 
-  for (let sellerID in responseSellers.val()) {
-    //REFAC, anything better to check ? object.keys and iterate over every ?
+  for (const sellerID in responseSellers.val()) {
+    // REFAC, anything better to check ? object.keys and iterate over every ?
     if (sellerID == uid) {
       sellerInDB = true;
     }
   }
   if (!sellerInDB) {
-    return database.ref("/itemsSold/" + uid).set(["initial state"]);
+    return database.ref(`/itemsSold/${uid}`).set(["initial state"]);
   }
 }
 
 function initializeUserIfNeeded(uid) {
   return Promise.all([
     initializeBuyerIfNeeded(uid),
-    initializeSellerIfNeeded(uid)
+    initializeSellerIfNeeded(uid),
   ]);
 }
 /* 
@@ -90,13 +90,13 @@ This function is incomplete. You need to complete it.
     returns: A promise containing the ID of the new listing
 */
 async function createListing(sellerID, price, blurb) {
-  let listingID = `${sellerID}H${genUID()}`; // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
+  const listingID = `${sellerID}H${genUID()}`; // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
 
-  let listingItem = {
-    sellerID: sellerID,
-    price: price,
-    blurb: blurb,
-    available: true
+  const listingItem = {
+    sellerID,
+    price,
+    blurb,
+    available: true,
   };
   database
     .ref("/listing")
@@ -113,13 +113,14 @@ getItemDescription returns the description of a listing
 */
 async function getItemDescription(listingID) {
   listingID;
-  let response = await database.ref(`/listing/${listingID}`).once("value");
+  const response = await database.ref(`/listing/${listingID}`).once("value");
 
-  let itemToReturn = {
+  const itemToReturn = {
     price: response.val().price,
-    blurb: response.val().blurb
+    blurb: response.val().blurb,
   };
   itemToReturn;
+
   return itemToReturn;
 }
 
@@ -138,7 +139,7 @@ The seller will see the listing in his history of items sold - DONE
 async function buy(buyerID, sellerID, listingID) {
   // take the previous value of itemsBought and concat if with the new bought item ID
   async function pushToItemsBought() {
-    let responseItemsToBought = await database
+    const responseItemsToBought = await database
       .ref(`/itemsBought/${buyerID}`)
       .once("value");
 
@@ -148,12 +149,13 @@ async function buy(buyerID, sellerID, listingID) {
     }
 
     itemsBoughtArray = itemsBoughtArray.concat([listingID]);
+
     return database.ref(`/itemsBought/${buyerID}`).set(itemsBoughtArray);
   }
 
   // take the previous value of itemsBought and concat if with the new bought item ID
   async function pushToItemsSold() {
-    let responseItemsToSold = await database
+    const responseItemsToSold = await database
       .ref(`/itemsSold/${sellerID}`)
       .once("value");
 
@@ -168,9 +170,9 @@ async function buy(buyerID, sellerID, listingID) {
   }
 
   //   remove items from items available by updating the available at off
-  let response = await database
+  const response = await database
     .ref(`/listing/${listingID}`)
-    .update({ available: false });
+    .update({available: false});
 
   return Promise.all([pushToItemsBought(), pushToItemsSold()]);
 
@@ -194,7 +196,8 @@ allItemsSold returns the IDs of all the items sold by a seller
 */
 async function allItemsSold(sellerID) {
   sellerID;
-  let response = await database.ref(`/itemsSold/${sellerID}`).once("value");
+  const response = await database.ref(`/itemsSold/${sellerID}`).once("value");
+
   return response.val();
 }
 
@@ -205,7 +208,8 @@ allItemsBought returns the IDs of all the items bought by a buyer
 */
 async function allItemsBought(buyerID) {
   buyerID;
-  let response = await database.ref(`/itemsBought/${buyerID}`).once("value");
+  const response = await database.ref(`/itemsBought/${buyerID}`).once("value");
+
   return response.val();
 }
 
@@ -215,18 +219,19 @@ Once an item is sold, it will not be returned by allListings
     returns: a promise containing an array of listing IDs
 */
 async function allListings() {
-  let response = await database.ref("/listing").once("value");
+  const response = await database.ref("/listing").once("value");
   console.log(response);
   response.val();
 
-  let availableList = [];
+  const availableList = [];
 
-  for (let item in response.val()) {
+  for (const item in response.val()) {
     if (response.val()[item].available === true) {
       availableList.push(item);
     }
   }
   availableList;
+
   return availableList;
 }
 
@@ -237,11 +242,11 @@ Once an item is sold, it will not be returned by searchForListings
     returns: a promise containing an array of listing IDs
 */
 async function searchForListings(searchTerm) {
-  let response = await database.ref("/listing").once("value");
-  let itemsInListing = response.val();
-  let matchedID = [];
+  const response = await database.ref("/listing").once("value");
+  const itemsInListing = response.val();
+  const matchedID = [];
 
-  for (let item in itemsInListing) {
+  for (const item in itemsInListing) {
     if (itemsInListing[item].available) {
       console.log(itemsInListing[item].blurb.includes(searchTerm));
       if (itemsInListing[item].blurb.includes(searchTerm)) {
@@ -249,44 +254,51 @@ async function searchForListings(searchTerm) {
       }
     }
   }
+
   return matchedID;
 }
 
 // The tests
 async function test() {
+<<<<<<< HEAD
   // await database.ref("/").set(null);
   let sellerID = genUID();
   let buyerID = genUID();
+=======
+  await database.ref("/").set(null);
+  const sellerID = genUID();
+  const buyerID = genUID();
+>>>>>>> front-end-React
 
   await initializeUserIfNeeded(sellerID);
   await initializeUserIfNeeded(buyerID);
 
-  let listing1ID = await createListing(sellerID, 500000, "A very nice boat");
-  let listing2ID = await createListing(sellerID, 1000, "Faux fur gloves");
-  let listing3ID = await createListing(sellerID, 100, "Running shoes");
-  let product2Description = await getItemDescription(listing2ID);
+  const listing1ID = await createListing(sellerID, 500000, "A very nice boat");
+  const listing2ID = await createListing(sellerID, 1000, "Faux fur gloves");
+  const listing3ID = await createListing(sellerID, 100, "Running shoes");
+  const product2Description = await getItemDescription(listing2ID);
 
   await buy(buyerID, sellerID, listing2ID);
   await buy(buyerID, sellerID, listing3ID);
 
-  let allSold = await allItemsSold(sellerID);
-  let soldDescriptions = await Promise.all(allSold.map(getItemDescription));
+  const allSold = await allItemsSold(sellerID);
+  const soldDescriptions = await Promise.all(allSold.map(getItemDescription));
   console.log("1step");
-  let allBought = await allItemsBought(buyerID);
+  const allBought = await allItemsBought(buyerID);
   console.log("2step");
-  let allBoughtDescriptions = await Promise.all(
-    allBought.map(getItemDescription)
+  const allBoughtDescriptions = await Promise.all(
+    allBought.map(getItemDescription),
   );
   console.log("before Search");
-  let listings = await allListings();
-  let boatListings = await searchForListings("boat");
+  const listings = await allListings();
+  const boatListings = await searchForListings("boat");
   console.log("boatListings", boatListings);
-  let shoeListings = await searchForListings("shoes");
+  const shoeListings = await searchForListings("shoes");
   console.log("shoelistng", shoeListings);
   console.log("after search");
-  let boatDescription = await getItemDescription(listings[0]);
-  let boatBlurb = boatDescription.blurb;
-  let boatPrice = boatDescription.price;
+  const boatDescription = await getItemDescription(listings[0]);
+  const boatBlurb = boatDescription.blurb;
+  const boatPrice = boatDescription.price;
   console.log("last step before assert");
 
   assert(allSold.length == 2); // The seller has sold 2 items
@@ -309,5 +321,5 @@ module.export = {
   allItemsSold,
   allItemsBought,
   allListings,
-  searchForListings
+  searchForListings,
 };
