@@ -33,8 +33,6 @@ function genUID() {
   return Math.floor(Math.random() * 100000000);
 }
 
-function uploadPicture() {}
-
 /*
 initializeUserIfNeeded adds the UID to our database unless it's already there
 parameter: [uid] the UID of the user.
@@ -77,7 +75,7 @@ async function initializeSellerIfNeeded(uid) {
 function initializeUserIfNeeded(uid) {
   return Promise.all([
     initializeBuyerIfNeeded(uid),
-    initializeSellerIfNeeded(uid),
+    initializeSellerIfNeeded(uid)
   ]);
 }
 /* 
@@ -89,14 +87,17 @@ This function is incomplete. You need to complete it.
       [blurb] A blurb describing the item
     returns: A promise containing the ID of the new listing
 */
-async function createListing(sellerID, price, blurb) {
+async function createListing(sellerID, productName, price, blurb, imageUrl) {
   const listingID = `${sellerID}H${genUID()}`; // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
 
   const listingItem = {
     sellerID,
+    productName,
     price,
     blurb,
     available: true,
+    listingID,
+    imageUrl
   };
   database
     .ref("/listing")
@@ -118,6 +119,12 @@ async function getItemDescription(listingID) {
   const itemToReturn = {
     price: response.val().price,
     blurb: response.val().blurb,
+    productName: response.val().productName,
+    sellerID: response.val().sellerID,
+    price: response.val().price,
+    listingID: response.val().listingID,
+    blurb: response.val().blurb,
+    imageUrl: response.val().imageUrl
   };
   itemToReturn;
 
@@ -172,7 +179,7 @@ async function buy(buyerID, sellerID, listingID) {
   //   remove items from items available by updating the available at off
   const response = await database
     .ref(`/listing/${listingID}`)
-    .update({available: false});
+    .update({ available: false });
 
   return Promise.all([pushToItemsBought(), pushToItemsSold()]);
 
@@ -260,15 +267,9 @@ async function searchForListings(searchTerm) {
 
 // The tests
 async function test() {
-<<<<<<< HEAD
   // await database.ref("/").set(null);
-  let sellerID = genUID();
-  let buyerID = genUID();
-=======
-  await database.ref("/").set(null);
   const sellerID = genUID();
   const buyerID = genUID();
->>>>>>> front-end-React
 
   await initializeUserIfNeeded(sellerID);
   await initializeUserIfNeeded(buyerID);
@@ -287,7 +288,7 @@ async function test() {
   const allBought = await allItemsBought(buyerID);
   console.log("2step");
   const allBoughtDescriptions = await Promise.all(
-    allBought.map(getItemDescription),
+    allBought.map(getItemDescription)
   );
   console.log("before Search");
   const listings = await allListings();
@@ -321,5 +322,5 @@ module.export = {
   allItemsSold,
   allItemsBought,
   allListings,
-  searchForListings,
+  searchForListings
 };

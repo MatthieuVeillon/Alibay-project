@@ -1,49 +1,95 @@
 const assert = require("assert");
+// const admin = require("firebase-admin");
+const firebase = require("firebase");
 
+/* Put your firebase code here */
+
+// const serviceAccount = require("/Users/matthieuveillon/Codeprojects/Alibay-project/backend-firebase/alibay-project-firebase-adminsdk-lrf6s-bbc6cf1745.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://alibay-project.firebaseio.com"
+// });
+// const database = admin.database();
+
+// import firebase from "firebase";
+
+const config = {
+  apiKey: "AIzaSyAYa9W4MdaR2PiqcYf4FTAuUwa5n4FYfms",
+  authDomain: "alibay-project.firebaseapp.com",
+  databaseURL: "https://alibay-project.firebaseio.com",
+  projectId: "alibay-project",
+  storageBucket: "alibay-project.appspot.com",
+  messagingSenderId: "523831352588"
+};
+
+firebase.initializeApp(config);
+const database = firebase.database();
+
+/*
+Before implementing the login functionality, use this function to generate a new UID every time.
+It will decrease your iteration time.
+*/
 function genUID() {
   return Math.floor(Math.random() * 100000000);
 }
 
-const itemsBought = {}; // global variable that keeps track of all the items a user has bought
-const itemsSold = {}; // global variable that keeps track of all the items a seller has sold
-const listing = {}; // QUESTION ARRAY or OBJECT - we choose object
-
-// You'll need to add many more global variables
-
 /*
-initializeUserIfNeeded adds the UID to our global state unless it's already there
+initializeUserIfNeeded adds the UID to our database unless it's already there
 parameter: [uid] the UID of the user.
-returns: undefined
+returns: A promise - DONE
 */
 
-function initializeUserIfNeeded(uid) {
-  // If the user is not in our global state, add him
+// get the itemsBought from firebase databse and check if the user is already there - otherwsie push a new user to the DB
 
-  //   QUESTION : global state is different from react right ? right now the logic
-  //   I understand is if user is not in our state => add a property to itemSold which doesn't make sense to me
+async function initializeBuyerIfNeeded(uid) {
+  const responseBuyers = await database.ref("/itemsBought").once("value");
+  let buyerInDB = false;
 
-  if (!(uid in itemsBought)) {
-    itemsBought[uid] = [];
+  for (const buyerID in responseBuyers.val()) {
+    // REFAC, anything better to check ? object.keys and iterate over every ?
+    if (buyerID == uid) {
+      buyerInDB = true;
+    }
   }
-  // There are many more things to do
+  if (!buyerInDB) {
+    const test = database.ref(`/itemsBought/${uid}`).set(["initial state"]);
+  }
+}
+// get the itemsSold from firebase databse and check if the user is already there - otherwsie push a new user to the DB
 
-  if (!(uid in itemsSold)) {
-    itemsSold[uid] = [];
+async function initializeSellerIfNeeded(uid) {
+  const responseSellers = await database.ref("/itemsSold").once("value");
+  let sellerInDB = false;
+
+  for (const sellerID in responseSellers.val()) {
+    // REFAC, anything better to check ? object.keys and iterate over every ?
+    if (sellerID == uid) {
+      sellerInDB = true;
+    }
+  }
+  if (!sellerInDB) {
+    return database.ref(`/itemsSold/${uid}`).set(["initial state"]);
   }
 }
 
-/*
+function initializeUserIfNeeded(uid) {
+  return Promise.all([
+    initializeBuyerIfNeeded(uid),
+    initializeSellerIfNeeded(uid)
+  ]);
+}
+/* 
 createListing adds a new listing to our global state.
-    parameters:
+This function is incomplete. You need to complete it.
+    parameters: 
       [sellerID] The ID of the seller
       [price] The price of the item
       [blurb] A blurb describing the item
-    returns: the ID of the new listing
+    returns: A promise containing the ID of the new listing
 */
-function createListing(sellerID, productName, price, blurb, imageUrl) {
-  const listingID = genUID(); // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
+async function createListing(sellerID, productName, price, blurb, imageUrl) {
+  const listingID = `${sellerID}H${genUID()}`; // QUESTION to check with MAX - what he thinks about how to generate ID ?  a voir si on refac pour un code unique en v2
 
-  console.log("createListing running");
   const listingItem = {
     sellerID,
     productName,
@@ -51,150 +97,221 @@ function createListing(sellerID, productName, price, blurb, imageUrl) {
     blurb,
     available: true,
     listingID,
-    imageUrl,
+    imageUrl
   };
+  database
+    .ref("/listing")
+    .child(listingID)
+    .set(listingItem);
 
-  listing[listingID] = listingItem;
-
-  console.log("listingItem", listingItem);
-
-  return listingItem;
+  return listingID;
 }
 
-/*
+/* 
 getItemDescription returns the description of a listing
     parameter: [listingID] The ID of the listing
-    returns: an object that contains the price and the blurb
+    returns: A promise that contains an object containing the price and blurb properties.
 */
-function getItemDescription(listingID) {
+async function getItemDescription(listingID) {
+  listingID;
+  const response = await database.ref(`/listing/${listingID}`).once("value");
+
   const itemToReturn = {
-    productName: listing[listingID].productName,
-    sellerID: listing[listingID].sellerID,
-    price: listing[listingID].price,
-    listingID: listing[listingID].listingID,
-    blurb: listing[listingID].blurb,
-    imageUrl: listing[listingID].imageUrl,
+    price: response.val().price,
+    blurb: response.val().blurb,
+    productName: response.val().productName,
+    sellerID: response.val().sellerID,
+    price: response.val().price,
+    listingID: response.val().listingID,
+    blurb: response.val().blurb,
+    imageUrl: response.val().imageUrl
   };
+  itemToReturn;
 
   return itemToReturn;
 }
 
-/*
+/* 
 buy changes the global state.
-Another buyer will not be able to purchase that listing - DONE with the one below - do we need to do anything more specific ?
-The listing will no longer appear in search results - DONE
+Another buyer will not be able to purchase that listing
+The listing will no longer appear in search results
 The buyer will see the listing in his history of purchases - DONE
 The seller will see the listing in his history of items sold - DONE
-    parameters:
+    parameters: 
      [buyerID] The ID of buyer
      [sellerID] The ID of seller
      [listingID] The ID of listing
-    returns: undefined
+    returns: a promise
 */
-function buy(buyerID, sellerID, listingID) {
-  if (listing[listingID].available) {
-    itemsBought[buyerID] = itemsBought[buyerID].concat([listingID]); // QUESTION  : should we include the listing ID ? at the top we're considering ItemsBought as an array The buyer will see the listing in his history of purchases
-    console.log(itemsSold, sellerID);
-    itemsSold[sellerID] = itemsSold[sellerID].concat([listingID]); // The seller will see the listing in his history of items sold
-    listing[listingID].available = false;
-  } else {
-    return "item already sold";
+async function buy(buyerID, sellerID, listingID) {
+  // take the previous value of itemsBought and concat if with the new bought item ID
+  async function pushToItemsBought() {
+    const responseItemsToBought = await database
+      .ref(`/itemsBought/${buyerID}`)
+      .once("value");
+
+    let itemsBoughtArray = responseItemsToBought.val();
+    if (itemsBoughtArray[0] === "initial state") {
+      itemsBoughtArray = [];
+    }
+
+    itemsBoughtArray = itemsBoughtArray.concat([listingID]);
+
+    return database.ref(`/itemsBought/${buyerID}`).set(itemsBoughtArray);
   }
+
+  // take the previous value of itemsBought and concat if with the new bought item ID
+  async function pushToItemsSold() {
+    const responseItemsToSold = await database
+      .ref(`/itemsSold/${sellerID}`)
+      .once("value");
+
+    let itemsSoldArray = responseItemsToSold.val();
+    if (itemsSoldArray[0] === "initial state") {
+      itemsSoldArray = [];
+    }
+
+    itemsSoldArray = itemsSoldArray.concat([listingID]);
+
+    return database.ref(`/itemsSold/${sellerID}`).set(itemsSoldArray);
+  }
+
+  //   remove items from items available by updating the available at off
+  const response = await database
+    .ref(`/listing/${listingID}`)
+    .update({ available: false });
+
+  return Promise.all([pushToItemsBought(), pushToItemsSold()]);
+
+  // push the purchase to the itemsBought Db
+
+  //     response.val().available = false
+
+  //   if (listing[listingID].available) {
+  //     itemsBought[buyerID] = itemsBought[buyerID].concat([listingID]); //QUESTION  : should we include the listing ID ? at the top we're considering ItemsBought as an array The buyer will see the listing in his history of purchases
+  //     itemsSold[sellerID] = itemsSold[sellerID].concat([listingID]); //The seller will see the listing in his history of items sold
+  //     listing[listingID].available = false;
+  //   } else {
+  //     return "item already sold";
+  //   }
 }
 
-/*
+/* 
 allItemsSold returns the IDs of all the items sold by a seller
     parameter: [sellerID] The ID of the seller
-    returns: an array of listing IDs - QUESTION not array with ID AND full object information ?
+    returns: a promise containing an array of listing IDs
 */
-function allItemsSold(sellerID) {
-  return itemsSold[sellerID];
+async function allItemsSold(sellerID) {
+  sellerID;
+  const response = await database.ref(`/itemsSold/${sellerID}`).once("value");
+
+  return response.val();
 }
 
 /*
 allItemsBought returns the IDs of all the items bought by a buyer
     parameter: [buyerID] The ID of the buyer
-    returns: an array of listing IDs
+    returns: a promise containing an array of listing IDs
 */
-function allItemsBought(buyerID) {
-  return itemsBought[buyerID];
+async function allItemsBought(buyerID) {
+  buyerID;
+  const response = await database.ref(`/itemsBought/${buyerID}`).once("value");
+
+  return response.val();
 }
 
 /*
 allListings returns the IDs of all the listings currently on the market
 Once an item is sold, it will not be returned by allListings
-    returns: an array of listing IDs
+    returns: a promise containing an array of listing IDs
 */
-function allListings() {
+async function allListings() {
+  const response = await database.ref("/listing").once("value");
+  console.log(response);
+  response.val();
+
   const availableList = [];
-  for (const item in listing) {
-    if (listing[item].available === true) {
+
+  for (const item in response.val()) {
+    if (response.val()[item].available === true) {
       availableList.push(item);
     }
   }
+  availableList;
 
   return availableList;
-  // return Object.keys(listing).filter(item => listing[item].available === true);
 }
 
 /*
-searchForListings returns the IDs of all the listings currently on the market and which match the searchterm
+searchForListings returns the IDs of all the listings currently on the market
 Once an item is sold, it will not be returned by searchForListings
     parameter: [searchTerm] The search string matching listing descriptions
-    returns: an array of listing IDs
+    returns: a promise containing an array of listing IDs
 */
-function searchForListings(searchTerm) {
-  const matchedSearchedItems = [];
+async function searchForListings(searchTerm) {
+  const response = await database.ref("/listing").once("value");
+  const itemsInListing = response.val();
+  const matchedID = [];
 
-  for (const item in listing) {
-    if (listing[item].available === true) {
-      if (
-        listing[item].blurb.includes(searchTerm) ||
-        listing[item].productName.includes(searchTerm)
-      ) {
-        matchedSearchedItems.push(item);
+  for (const item in itemsInListing) {
+    if (itemsInListing[item].available) {
+      console.log(itemsInListing[item].blurb.includes(searchTerm));
+      if (itemsInListing[item].blurb.includes(searchTerm)) {
+        matchedID.push(item);
       }
     }
   }
 
-  return matchedSearchedItems;
+  return matchedID;
 }
 
-// // The tests
-// let sellerID = genUID();
-// let buyerID = genUID();
-// initializeUserIfNeeded(sellerID);
-// initializeUserIfNeeded(buyerID);
-// let listing1ID = createListing(sellerID, 500000, "A very nice boat");
-// let listing2ID = createListing(sellerID, 1000, "Faux fur gloves");
-// let listing3ID = createListing(sellerID, 100, "Running shoes");
-// let product2Description = getItemDescription(listing2ID);
+// The tests
+async function test() {
+  // await database.ref("/").set(null);
+  const sellerID = genUID();
+  const buyerID = genUID();
 
-// buy(buyerID, sellerID, listing2ID);
-// buy(buyerID, sellerID, listing3ID);
+  await initializeUserIfNeeded(sellerID);
+  await initializeUserIfNeeded(buyerID);
 
-// let allSold = allItemsSold(sellerID);
-// let soldDescriptions = allSold.map(getItemDescription);
+  const listing1ID = await createListing(sellerID, 500000, "A very nice boat");
+  const listing2ID = await createListing(sellerID, 1000, "Faux fur gloves");
+  const listing3ID = await createListing(sellerID, 100, "Running shoes");
+  const product2Description = await getItemDescription(listing2ID);
 
-// let allBought = allItemsBought(buyerID);
-// let allBoughtDescriptions = allBought.map(getItemDescription);
+  await buy(buyerID, sellerID, listing2ID);
+  await buy(buyerID, sellerID, listing3ID);
 
-// let listings = allListings();
-// let boatListings = searchForListings("boat");
-// let shoeListings = searchForListings("shoes");
+  const allSold = await allItemsSold(sellerID);
+  const soldDescriptions = await Promise.all(allSold.map(getItemDescription));
+  console.log("1step");
+  const allBought = await allItemsBought(buyerID);
+  console.log("2step");
+  const allBoughtDescriptions = await Promise.all(
+    allBought.map(getItemDescription)
+  );
+  console.log("before Search");
+  const listings = await allListings();
+  const boatListings = await searchForListings("boat");
+  console.log("boatListings", boatListings);
+  const shoeListings = await searchForListings("shoes");
+  console.log("shoelistng", shoeListings);
+  console.log("after search");
+  const boatDescription = await getItemDescription(listings[0]);
+  const boatBlurb = boatDescription.blurb;
+  const boatPrice = boatDescription.price;
+  console.log("last step before assert");
 
-// let boatDescription = getItemDescription(listings[0]);
-// let boatBlurb = boatDescription.blurb;
-// let boatPrice = boatDescription.price;
-
-// assert(allSold.length == 2); // The seller has sold 2 items
-// assert(allBought.length == 2); // The buyer has bought 2 items
-// assert(listings.length == 1); // Only the boat is still on sale
-// assert(boatListings.length == 1); // The boat hasn't been sold yet
-// assert(shoeListings.length == 0); // The shoes have been sold
-// assert(boatBlurb == "A very nice boat");
-// assert(boatPrice == 500000);
-// console.log("complete");
+  assert(allSold.length == 2); // The seller has sold 2 items
+  assert(allBought.length == 2); // The buyer has bought 2 items
+  assert(listings.length == 1); // Only the boat is still on sale
+  assert(boatListings.length == 1); // The boat hasn't been sold yet
+  assert(shoeListings.length == 0); // The shoes have been sold
+  assert(boatBlurb == "A very nice boat");
+  assert(boatPrice == 500000);
+  console.log("complete");
+}
+test();
 
 module.exports = {
   genUID,
@@ -205,5 +322,5 @@ module.exports = {
   allItemsSold,
   allItemsBought,
   allListings,
-  searchForListings,
+  searchForListings
 };

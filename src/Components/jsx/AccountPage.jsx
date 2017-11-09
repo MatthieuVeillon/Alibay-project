@@ -10,11 +10,18 @@ import {
   FormControl
 } from "react-bootstrap";
 import "../css/Account.css";
+
 import {
   allItemsSold,
   getItemDescription,
   allItemsBought
-} from "../../backend-mockup";
+} from "../../backend-mockup.js";
+
+//import foo from "../../backend-mockup.js";
+//console.log(foo);
+//let allItemsSold = 9;
+//let getItemDescription = 9;
+//let allItemsBought = 9;
 
 class AccountPage extends Component {
   getAllDescriptionSold = sellerId => {

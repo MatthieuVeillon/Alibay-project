@@ -4,5 +4,9 @@
     "plugin:jsx-a11y/recommended",
     "eslint-config-with-prettier"
   ],
-  "plugins": ["jsx-a11y"]
+  "plugins": ["jsx-a11y"],
+  "rules": {
+    "comma-dangle": [2, "never"],
+    "comma-style": 2
+  }
 }

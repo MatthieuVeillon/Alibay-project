@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Jumbotron,
   Button,
@@ -8,11 +8,11 @@ import {
   Form,
   FormGroup,
   FormControl,
-  ControlLabel,
+  ControlLabel
 } from "react-bootstrap";
-import {LinkContainer} from "react-router-bootstrap";
+import { LinkContainer } from "react-router-bootstrap";
 import "../css/Sell.css";
-import {createListing} from "../../backend-mockup";
+import { createListing } from "../../backend-mockup";
 
 // import all methods for firebase
 import * as firebase from "firebase";
@@ -40,7 +40,7 @@ class Sell extends Component {
           ProductName,
           productPrice,
           productDescription,
-          productImgUrl,
+          productImgUrl
         );
       });
   };
@@ -57,7 +57,7 @@ class Sell extends Component {
         storageRef
           .ref()
           .child(`${file.name}`)
-          .getDownloadURL(),
+          .getDownloadURL()
       );
   };
 
