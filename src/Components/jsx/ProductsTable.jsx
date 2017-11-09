@@ -26,7 +26,6 @@ class ProductTables extends Component {
   getAlldescription = () => {
     // an array of available listing IDs
     const ids = allListings();
-    console.log("ids", ids);
     // an array of available listing full description
     const descriptionsArray = ids.map(id => getItemDescription(id));
 

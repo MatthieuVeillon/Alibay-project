@@ -17,23 +17,30 @@ class AccountPage extends Component {
     // an array of sold listing IDs
     const ids = allItemsSold(sellerId);
     // an array of sold listing full description
-    if (!ids.length > 0) {
-      const descriptionsArray = ids.map(id => getItemDescription(id));
 
-      return descriptionsArray;
+    if (!Array.isArray(ids) || !ids.length) {
+      // check if array does not exist, or is not an array, or is empty
+      const noProductSold = "no object sold yet";
+
+      return noProductSold;
     }
-    const noProductSolds = (
-      <div>
-        <Jumbotron>
-          <h3>No product sold</h3>
-        </Jumbotron>
-      </div>
-    );
 
-    return noProductSolds;
+    const descriptionsArray = ids.map(id => getItemDescription(id));
+
+    return descriptionsArray;
   };
   displaySold = sellerId => {
     const descriptions = this.getAllDescriptionSold(sellerId);
+
+    if (typeof descriptions === "string") {
+      return (
+        <div>
+          <Jumbotron>
+            <h3>No object sold yet</h3>
+          </Jumbotron>
+        </div>
+      );
+    }
     // iterate through array of descrpition object to populate an array of html elements
     const htmlDescription = descriptions.map((desc, i) => (
       <div key={i}>
