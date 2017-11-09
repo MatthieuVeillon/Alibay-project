@@ -12,20 +12,29 @@ import {
 import ReactModal from "react-modal";
 import {LinkContainer} from "react-router-bootstrap";
 import "../css/ProductsTable.css";
-import {getItemDescription, allListings, buy} from "../../backend-mockup";
+import {
+  getItemDescription,
+  allListings,
+  buy,
+  searchForListings,
+} from "../../backend-mockup";
 
 class ProductTables extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       showModal: false,
       descriptions: this.getAlldescription(),
     };
   }
-
+  componentWillReceiveProps(nextProps) {
+    this.setState({
+      descriptions: this.getAlldescription(),
+    });
+  }
   getAlldescription = () => {
     // an array of available listing IDs
-    const ids = allListings();
+    const ids = searchForListings(this.props.searchTerm);
     // an array of available listing full description
     const descriptionsArray = ids.map(id => getItemDescription(id));
 

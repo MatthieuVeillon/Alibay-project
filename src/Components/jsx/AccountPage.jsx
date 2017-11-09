@@ -103,19 +103,19 @@ class AccountPage extends Component {
     return (
       <Grid className="componentHeader">
         <Row>
-          <Col xs={12}>
+          <Col md={12}>
             <h1>Hello id {this.props.currentUserId}</h1>
           </Col>
-          <Col xs={6}>
+          <Col md={6}>
             <h2>Products sold:</h2>
           </Col>
-          <Col xs={6}>
+          <Col md={6}>
             <h2>Products bought:</h2>
           </Col>
         </Row>
         <Row>
-          <Col xs={6}>{this.displaySold(this.props.currentUserId)}</Col>
-          <Col xs={6}>{this.displayBought(this.props.currentUserId)}</Col>
+          <Col md={6}>{this.displaySold(this.props.currentUserId)}</Col>
+          <Col md={6}>{this.displayBought(this.props.currentUserId)}</Col>
         </Row>
       </Grid>
     );

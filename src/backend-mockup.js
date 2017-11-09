@@ -143,7 +143,10 @@ function searchForListings(searchTerm) {
 
   for (const item in listing) {
     if (listing[item].available === true) {
-      if (listing[item].blurb.includes(searchTerm)) {
+      if (
+        listing[item].blurb.includes(searchTerm) ||
+        listing[item].productName.includes(searchTerm)
+      ) {
         matchedSearchedItems.push(item);
       }
     }
