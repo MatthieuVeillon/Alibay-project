@@ -15,11 +15,9 @@ import * as firebase from "firebase";
 // import config file to initialize DB for firebase
 import fb from "./firebase-config";
 
+console.log(2 + 2);
 // Firebase instance for login
 const provider = new firebase.auth.GoogleAuthProvider();
-
-// Firebase instance for storage
-const storageRef = firebase.storage().ref();
 
 class App extends Component {
   constructor() {
@@ -29,6 +27,7 @@ class App extends Component {
     };
   }
   componentDidMount() {
+    console.log("authentication from page");
     firebase
       .auth()
       .signInWithPopup(provider)

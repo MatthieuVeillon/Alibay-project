@@ -19,6 +19,8 @@ import {
   searchForListings
 } from "../../backend-mockup";
 
+console.log(2 + 2);
+
 class ProductTables extends Component {
   constructor(props) {
     super(props);
@@ -49,6 +51,7 @@ class ProductTables extends Component {
   getAlldescription = async () => {
     // an array of available listing IDs
     const ids = await searchForListings(this.props.searchTerm);
+    console.log("ids", ids);
     // an array of available listing full description
     const descriptionsArray = Promise.all(
       ids.map(async id => await getItemDescription(id))
@@ -67,9 +70,7 @@ class ProductTables extends Component {
     buy(this.props.currentUserId, x, y)
       .then(() => this.handleOpenModal())
       .then(() => this.getAlldescription())
-      .then(result =>
-        result.then(result => this.setState({ descriptions: result }))
-      );
+      .then(result => this.setState({ descriptions: result }));
   };
   displayProducts = () => {
     // iterate through array of descrpition object to populate an array of html elements
@@ -82,7 +83,6 @@ class ProductTables extends Component {
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
           <h4>Item id: {desc.listingID}</h4>
-          <img src={desc.imageUrl} alt="alt" />
           <img src={desc.imageUrl} alt="" />
           <Button
             bsStyle="primary"

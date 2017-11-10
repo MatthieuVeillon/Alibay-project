@@ -185,7 +185,7 @@ allItemsSold returns the IDs of all the items sold by a seller
     returns: a promise containing an array of listing IDs
 */
 async function allItemsSold(sellerID) {
-  sellerID;
+  console.log("sellerID in all item Sold", sellerID);
   const response = await database.ref(`/itemsSold/${sellerID}`).once("value");
 
   return response.val();

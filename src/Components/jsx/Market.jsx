@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
 import {
   Jumbotron,
@@ -10,7 +10,7 @@ import {
   FormGroup,
   FormControl,
   DropdownButton,
-  InputGroup,
+  InputGroup
 } from "react-bootstrap";
 import "../css/Market.css";
 import ProductsTable from "./ProductsTable";
@@ -20,12 +20,12 @@ class Market extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchTerm: "",
+      searchTerm: ""
     };
   }
 
   searchClick = () => {
-    this.setState({searchTerm: this.searchTerm.value});
+    this.setState({ searchTerm: this.searchTerm.value });
   };
   render() {
     return (

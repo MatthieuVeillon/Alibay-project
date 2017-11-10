@@ -17,33 +17,60 @@ import {
   allItemsBought
 } from "../../backend-mockup.js";
 
-//import foo from "../../backend-mockup.js";
-//console.log(foo);
-//let allItemsSold = 9;
-//let getItemDescription = 9;
-//let allItemsBought = 9;
-
 class AccountPage extends Component {
-  getAllDescriptionSold = sellerId => {
+  constructor() {
+    super();
+    this.state = {
+      descriptionsSold: "no product sold",
+      descriptionsBought: "no product bought"
+    };
+  }
+
+  // update the state as an array of ID which match the seller ID
+  updateDescriptionState = userId => {
+    console.log("userId in update Desc", userId);
+    this.getAllDescriptionSold(userId).then(descriptionsSold =>
+      this.setState({ descriptionsSold: descriptionsSold })
+    );
+    this.getAllDescriptionBought(userId).then(descriptionsBought =>
+      this.setState(
+        { descriptionsBought: descriptionsBought },
+        console.log("descriptionsBought step 1", descriptionsBought)
+      )
+    );
+  };
+
+  //
+  componentDidUpdate(prevProps, prevState) {
+    if (this.props.currentUserId !== prevProps.currentUserId)
+      this.updateDescriptionState(this.props.currentUserId);
+  }
+
+  componentDidMount() {
+    this.updateDescriptionState(this.props.currentUserId);
+    console.log("seller ID as a props", this.props.currentUserId);
+  }
+
+  getAllDescriptionSold = async userId => {
     // an array of sold listing IDs
-    const ids = allItemsSold(sellerId);
+    const ids = await allItemsSold(userId);
+
     // an array of sold listing full description
 
-    if (!Array.isArray(ids) || !ids.length) {
-      // check if array does not exist, or is not an array, or is empty
-      const noProductSold = "no object sold yet";
-
-      return noProductSold;
+    if (!userId || ids[0] === "initial state") {
+      return this.state.descriptionsSold;
     }
 
-    const descriptionsArray = ids.map(id => getItemDescription(id));
+    const descriptionsArray = Promise.all(
+      ids.map(async id => await getItemDescription(id))
+    );
+    descriptionsArray.then(x => console.log("descriptionsArray is ?", x));
 
     return descriptionsArray;
   };
-  displaySold = sellerId => {
-    const descriptions = this.getAllDescriptionSold(sellerId);
 
-    if (typeof descriptions === "string") {
+  displaySold = userId => {
+    if (typeof this.state.descriptionsSold === "string") {
       return (
         <div>
           <Jumbotron>
@@ -53,7 +80,7 @@ class AccountPage extends Component {
       );
     }
     // iterate through array of descrpition object to populate an array of html elements
-    const htmlDescription = descriptions.map((desc, i) => (
+    const htmlDescription = this.state.descriptionsSold.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
           <h3>{desc.productName}</h3>
@@ -66,26 +93,25 @@ class AccountPage extends Component {
 
     return htmlDescription;
   };
-  getAllDescriptionBought = sellerId => {
+  getAllDescriptionBought = async userId => {
     // an array of sold listing IDs
-    const ids = allItemsBought(sellerId);
+    const ids = await allItemsBought(userId);
     // an array of sold listing full description
 
-    if (!Array.isArray(ids) || !ids.length) {
+    if (!userId || ids[0] === "initial state") {
       // check if array does not exist, or is not an array, or is empty
-      const noProductBought = "no object bought yet";
-
-      return noProductBought;
+      return this.state.descriptionsSold;
     }
 
-    const descriptionsArray = ids.map(id => getItemDescription(id));
+    const descriptionsArray = Promise.all(
+      ids.map(async id => await getItemDescription(id))
+    );
 
     return descriptionsArray;
   };
-  displayBought = sellerId => {
-    const descriptions = this.getAllDescriptionBought(sellerId);
 
-    if (typeof descriptions === "string") {
+  displayBought = userId => {
+    if (typeof this.state.descriptionsBought === "string") {
       return (
         <div>
           <Jumbotron>
@@ -95,12 +121,13 @@ class AccountPage extends Component {
       );
     }
     // iterate through array of descrpition object to populate an array of html elements
-    const htmlDescription = descriptions.map((desc, i) => (
+    const htmlDescription = this.state.descriptionsBought.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
           <h3>{desc.productName}</h3>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
+          <img src={desc.imageUrl} alt="" />
         </Jumbotron>
       </div>
     ));
