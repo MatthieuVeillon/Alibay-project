@@ -30,13 +30,13 @@ class ProductTables extends Component {
     };
   }
 
-  updateDescriptionsState = () => {
+  updateDescriptionsState = searchTerm => {
     console.log("initial", this.state.descriptions);
-    this.getAlldescription().then(result =>
+    this.getAlldescription(searchTerm).then(result => {
       this.setState({ descriptions: result }, () =>
         console.log("second state", this.state.descriptions)
-      )
-    );
+      );
+    });
   };
 
   componentWillMount() {
@@ -46,11 +46,11 @@ class ProductTables extends Component {
 
   componentWillReceiveProps(nextProps) {
     console.log("willreceiveprops", this.state.descriptions);
-    this.updateDescriptionsState();
+    this.updateDescriptionsState(nextProps.searchTerm);
   }
-  getAlldescription = async () => {
+  getAlldescription = async searchTerm => {
     // an array of available listing IDs
-    const ids = await searchForListings(this.props.searchTerm);
+    const ids = await searchForListings(searchTerm);
     console.log("ids", ids);
     // an array of available listing full description
     const descriptionsArray = Promise.all(
@@ -69,7 +69,7 @@ class ProductTables extends Component {
   initializeBuy = (x, y) => {
     buy(this.props.currentUserId, x, y)
       .then(() => this.handleOpenModal())
-      .then(() => this.getAlldescription())
+      .then(() => this.getAlldescription(this.props.searchTerm))
       .then(result => this.setState({ descriptions: result }));
   };
   displayProducts = () => {
