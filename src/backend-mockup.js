@@ -240,7 +240,10 @@ async function searchForListings(searchTerm) {
   for (const item in itemsInListing) {
     if (itemsInListing[item].available) {
       console.log(itemsInListing[item].blurb.includes(searchTerm));
-      if (itemsInListing[item].blurb.includes(searchTerm)) {
+      if (
+        itemsInListing[item].blurb.includes(searchTerm) ||
+        itemsInListing[item].productName.includes(searchTerm)
+      ) {
         matchedID.push(item);
       }
     }
