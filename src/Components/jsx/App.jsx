@@ -23,7 +23,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      currentUserId: ""
+      currentUserId: "",
+      currentUserName: ""
     };
   }
   componentDidMount() {
@@ -32,6 +33,7 @@ class App extends Component {
       .auth()
       .signInWithPopup(provider)
       .then(result => {
+        this.setState({ currentUserName: result.user.displayName });
         this.setState({ currentUserId: result.user.uid });
       })
       .then(() => initializeUserIfNeeded(this.state.currentUserId));
@@ -50,12 +52,15 @@ class App extends Component {
 
           <Route
             path="/accountPage"
-            render={() => (
-              <AccountPage
-                currentUserId={this.state.currentUserId}
-                currentUserId={this.state.currentUserId}
-              />
-            )}
+            render={() =>
+              this.state.currentUserId ? (
+                <AccountPage
+                  currentUserId={this.state.currentUserId}
+                  currentUserName={this.state.currentUserName}
+                />
+              ) : (
+                <h1>Loading</h1>
+              )}
           />
 
           <Route

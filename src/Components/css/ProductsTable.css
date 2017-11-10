@@ -4,3 +4,13 @@
 .modal {
   padding-top: 30vh;
 }
+
+.productImage {
+  width: 250px;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+.product-container {
+  display: flex;
+}

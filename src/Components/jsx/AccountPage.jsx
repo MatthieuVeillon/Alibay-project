@@ -78,10 +78,10 @@ class AccountPage extends Component {
     const htmlDescription = this.state.descriptionsSold.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
+          <img src={desc.imageUrl} alt="" />
           <h3>{desc.productName}</h3>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
-          <img src={desc.imageUrl} alt="" />
         </Jumbotron>
       </div>
     ));
@@ -119,10 +119,10 @@ class AccountPage extends Component {
     const htmlDescription = this.state.descriptionsBought.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
+          <img src={desc.imageUrl} alt="" />
           <h3>{desc.productName}</h3>
           <h4>Price: {desc.price}</h4>
           <h4>Description: {desc.blurb}</h4>
-          <img src={desc.imageUrl} alt="" />
         </Jumbotron>
       </div>
     ));
@@ -134,7 +134,7 @@ class AccountPage extends Component {
       <Grid className="componentHeader">
         <Row>
           <Col md={12}>
-            <h1>Hello id {this.props.currentUserId}</h1>
+            <h1>Hello id {this.props.currentUserName}</h1>
           </Col>
           <Col md={6}>
             <h2>Products sold:</h2>

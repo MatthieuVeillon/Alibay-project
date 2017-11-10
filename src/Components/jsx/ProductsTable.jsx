@@ -79,17 +79,25 @@ class ProductTables extends Component {
     const htmlDescription = this.state.descriptions.map((desc, i) => (
       <div key={i}>
         <Jumbotron>
-          <h3>{desc.productName}</h3>
-          <h4>Price: {desc.price}</h4>
-          <h4>Description: {desc.blurb}</h4>
-          <h4>Item id: {desc.listingID}</h4>
-          <img src={desc.imageUrl} alt="" />
-          <Button
-            bsStyle="primary"
-            onClick={() => this.initializeBuy(desc.sellerID, desc.listingID)}
-          >
-            Buy
-          </Button>
+          <div className="product-container">
+            <div>
+              {" "}
+              <img className="productImage" src={desc.imageUrl} alt="" />
+            </div>
+            <div>
+              <h3>{desc.productName}</h3>
+              <h4>Price: {desc.price}</h4>
+              <h4>Description: {desc.blurb}</h4>
+              <h4>Item id: {desc.listingID}</h4>
+              <Button
+                bsStyle="primary"
+                onClick={() =>
+                  this.initializeBuy(desc.sellerID, desc.listingID)}
+              >
+                Buy this item
+              </Button>
+            </div>
+          </div>
         </Jumbotron>
       </div>
     ));
