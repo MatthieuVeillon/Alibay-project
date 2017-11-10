@@ -31,10 +31,8 @@ class Sell extends Component {
     this.uploadImage()
       .then(url => {
         productImgUrl = url;
-        console.log("productImgUrl", productImgUrl);
       })
       .then(() => {
-        console.log("hey its createListing");
         createListing(
           userId,
           ProductName,

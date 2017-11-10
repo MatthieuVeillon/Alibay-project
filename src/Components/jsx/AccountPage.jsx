@@ -28,15 +28,11 @@ class AccountPage extends Component {
 
   // update the state as an array of ID which match the seller ID
   updateDescriptionState = userId => {
-    console.log("userId in update Desc", userId);
     this.getAllDescriptionSold(userId).then(descriptionsSold =>
       this.setState({ descriptionsSold: descriptionsSold })
     );
     this.getAllDescriptionBought(userId).then(descriptionsBought =>
-      this.setState(
-        { descriptionsBought: descriptionsBought },
-        console.log("descriptionsBought step 1", descriptionsBought)
-      )
+      this.setState({ descriptionsBought: descriptionsBought })
     );
   };
 
@@ -48,7 +44,6 @@ class AccountPage extends Component {
 
   componentDidMount() {
     this.updateDescriptionState(this.props.currentUserId);
-    console.log("seller ID as a props", this.props.currentUserId);
   }
 
   getAllDescriptionSold = async userId => {
