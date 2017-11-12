@@ -24,6 +24,10 @@ class Market extends Component {
     };
   }
 
+  componentDidMount() {
+    this.searchClick();
+  }
+
   searchClick = () => {
     this.setState({ searchTerm: this.searchTerm.value });
   };
