@@ -156,7 +156,6 @@ async function buy(buyerID, sellerID, listingID) {
     }
 
     itemsBoughtArray = itemsBoughtArray.concat([listingID]);
-
     return database.ref(`/itemsBought/${buyerID}`).set(itemsBoughtArray);
   }
 
@@ -238,7 +237,6 @@ async function allListings() {
     }
   }
   availableList;
-
   return availableList;
 }
 
@@ -261,7 +259,6 @@ async function searchForListings(searchTerm) {
       }
     }
   }
-
   return matchedID;
 }
 
